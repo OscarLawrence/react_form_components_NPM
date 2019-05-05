@@ -3,7 +3,13 @@
   "version": "0.1.0",
   "description": "simple form components for react",
   "main": "index.js",
-  "dependencies": {},
+  "dependencies": {
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-spring": "^8.0.20",
+    "shortid": "^2.2.14",
+    "styled-components": "^4.2.0"
+  },
   "devDependencies": {
     "file-loader": "^3.0.1",
     "image-webpack-loader": "^4.6.0",
@@ -15,7 +21,8 @@
     "webpack-cli": "^3.3.2"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "git": "git add . && git commit -m 'update' && git push origin master"
   },
   "keywords": [
     "forms",
