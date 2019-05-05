@@ -1,5 +1,4 @@
-import React from "react";
-import PropTypes from "prop-types";
+import * as React from "react";
 
 import { useSpring, animated } from "react-spring";
 
@@ -7,21 +6,36 @@ import Asterisk from "../assets/asterisk.png";
 
 import { Colors, Fonts } from "../styles";
 
-export const Input = props => {
+export interface InputProps {
+  width?: string | number;
+  fontFamily?: string;
+  error?: boolean;
+  required?: boolean;
+  type?: string;
+  label: string;
+}
+
+const Input: React.SFC<InputProps> = props => {
   const style = {
     border: "none",
     outline: "none",
-    width: props.width ? props.width : "100%",
+    width: props.width || "100%",
     fontSize: "1.5em",
-    fontFamily: Fonts.standard
+    fontFamily: props.fontFamily || Fonts.standard
   };
-
+  const Info = styled.div`
+    text-align: left;
+    pointer-events: none;
+    height: 1.5rem;
+    font-weight: 400;
+    font-family: ${props.fontFamily || Fonts.standard};
+  `;
   const pStyle = {
     textAlign: "left",
     pointerEvents: "none",
     height: "1.5rem",
     fontWeight: 400,
-    fontFamily: Fonts.standard
+    fontFamily: props.fontFamily || Fonts.standard
   };
 
   const bStyle = {
@@ -43,7 +57,7 @@ export const Input = props => {
     backgroundColor: Colors.subtle
   }));
 
-  const handleFocus = e => {
+  const handleFocus = (e: any) => {
     e.preventDefault();
     set({
       fontSize: "1em",
@@ -54,7 +68,7 @@ export const Input = props => {
       backgroundColor: Colors.highlight
     });
   };
-  const handleUnFocus = e => {
+  const handleUnFocus = (e: any) => {
     e.preventDefault();
     set({
       fontSize: e.target.value === "" ? "1.5em" : "1em",
@@ -76,19 +90,21 @@ export const Input = props => {
         onBlur={handleUnFocus}
         style={style}
       />
-      <animated.div style={{ ...spring, ...pStyle }}>
-        {props.label}{" "}
-        {props.required ? (
-          <img
-            style={{
-              width: "7.5px",
-              height: "7.5px",
-              transform: "translateY(-150%)"
-            }}
-            alt="is required asterisk"
-            src={Asterisk}
-          />
-        ) : null}
+      <animated.div style={spring}>
+        <Info>
+          {props.label}{" "}
+          {props.required ? (
+            <img
+              style={{
+                width: "7.5px",
+                height: "7.5px",
+                transform: "translateY(-150%)"
+              }}
+              alt="is required asterisk"
+              src={Asterisk}
+            />
+          ) : null}
+        </Info>
       </animated.div>
       <animated.div style={{ ...borderSpring, ...bStyle }} />
       {props.error ? (
@@ -107,3 +123,5 @@ export const Input = props => {
     </div>
   );
 };
+
+export default Input;
