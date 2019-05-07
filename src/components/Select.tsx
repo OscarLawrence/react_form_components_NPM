@@ -1,21 +1,29 @@
-import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
-
+import * as React from "react";
+import styled from "styled-components";
 import { useSpring, animated } from "react-spring";
 
 import { generate } from "shortid";
 
-import DropDownIcon from "../assets/drop-down-arrow.png";
+const DropDownIcon = require("../assets/drop-down-arrow.png");
 
 import { Colors, Fonts } from "../styles";
 
-export const Select = props => {
-  // useState for open/close
-  const [open, setOpen] = useState(false);
-  const [currentValue, setValue] = useState(props.currentValue);
-  const [keyUser, setKeyUser] = useState(false);
+export interface SelectProps {
+  currentValue: string;
+  options: object;
+  onChange?: (value) => void;
+  hoverColor?: string;
+  width?: string;
+  fontFamily?: string;
+}
 
-  useEffect(() => {
+const Select: React.SFC<SelectProps> = props => {
+  // useState for open/close
+  const [open, setOpen] = React.useState(false);
+  const [currentValue, setValue] = React.useState(props.currentValue);
+  const [keyUser, setKeyUser] = React.useState(false);
+
+  React.useEffect(() => {
     document.addEventListener("mouseup", handleOutsideClick, true);
     document.addEventListener("keydown", kbUser, true);
     return () => {
@@ -51,31 +59,31 @@ export const Select = props => {
   };
 
   //__options div styles__
-  const optionsStyle = {
-    borderStyle: "none solid solid solid",
-    borderWidth: "0px",
-    borderRadius: "5px",
-    boxShadow: " 0px 12px 37px 1px rgba(0,0,0,0.47)",
-    position: "absolute",
-    width: props.width ? props.width : 100,
-    fontFamily: props.fontFamily ? props.fontFamily : Fonts.standard,
-    margin: "0 auto",
-    left: 0,
-    right: 0,
-    zIndex: 9999
-  };
+  const Options = styled.div`
+    border-style: none solid solid solid;
+    border-width: 0px;
+    border-radius: 5px;
+    box-shadow: 0px 12px 37px 1px rgba(0, 0, 0, 0.47);
+    position: absolute;
+    width: ${props.width || 100};
+    font-family: ${props.fontFamily || Fonts.standard};
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    z-index: 999;
+  `;
   //__selectButton Style__
-  const selectButtonStyle = {
-    borderStyle: "none none solid none",
-    borderWidth: "1px",
-    borderColor: "black",
-    cursor: "pointer",
-    fontFamily: props.fontFamily ? props.fontFamily : Fonts.standard,
-    width: props.width ? props.width : 100,
-    textAlign: "left",
-    backgroundColor: "transparent",
-    outline: keyUser ? "  " : "none"
-  };
+  const SelectButton = styled.button`
+    border-style: none none solid none;
+    border-width: 1px;
+    border-color: black;
+    cursor: pointer;
+    font-family: ${props.fontFamily || Fonts.standard};
+    width: ${props.width || 100};
+    text-align: left;
+    background-color: transparent;
+    outline: ${keyUser ? "  " : "none"};
+  `;
 
   // ______handler______
   const toggle = e => {
@@ -92,16 +100,16 @@ export const Select = props => {
   };
   return (
     <div style={selectBoxStyles} id={selectID} className="selectBox">
-      <button style={selectButtonStyle} onClick={toggle}>
+      <SelectButton onClick={toggle}>
         {currentValue}
         <img
           style={{ float: "right", width: ".8em" }}
           src={DropDownIcon}
           alt=""
         />
-      </button>
+      </SelectButton>
       {open ? (
-        <div style={optionsStyle} className="selectOptions">
+        <Options className="selectOptions">
           {Object.keys(props.options).map((optionKey, i) => {
             return (
               <SelectOption
@@ -115,22 +123,23 @@ export const Select = props => {
               </SelectOption>
             );
           })}
-        </div>
+        </Options>
       ) : null}
     </div>
   );
 };
 
-Select.propTypes = {
-  currentValue: PropTypes.string.isRequired,
-  options: PropTypes.object.isRequired,
-  onChange: PropTypes.func,
-  hoverColor: PropTypes.string,
-  width: PropTypes.string,
-  fontFamily: PropTypes.string
-};
+export default Select;
 
-const SelectOption = props => {
+export interface SelectOptionProps {
+  keyuser: boolean;
+  onClick: (e) => void;
+  value: string;
+  key: number;
+  hoverColor: string | null;
+}
+
+const SelectOption: React.SFC<SelectOptionProps> = props => {
   const [spring, set] = useSpring(() => ({
     backgroundColor: "white"
   }));
