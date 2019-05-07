@@ -1,12 +1,11 @@
-const Paths = require("Paths");
+const path = require("path");
 
-const WebpackCleanupPlugin = require("webpack-cleanup-plugin");
 const ImageminWebpWebpackPlugin = require("imagemin-webp-webpack-plugin");
 
 module.exports = {
-  entry: Paths.src,
+  entry: [path.resolve("./src/")],
   output: {
-    path: Paths.BaseDir,
+    path: path.resolve("./dist"),
     filename: "index.js"
   },
   resolve: {
@@ -19,7 +18,7 @@ module.exports = {
         exclude: [/node_modules/],
         loader: "ts-loader",
         options: {
-          configFile: Paths.tsConfig
+          configFile: path.resolve("./config/tsconfig.json")
         }
       },
       {
@@ -39,8 +38,8 @@ module.exports = {
     ]
   },
   mode: "production",
+  target: "node",
   plugins: [
-    new WebpackCleanupPlugin(),
     new ImageminWebpWebpackPlugin({
       mozjpeg: {
         progressive: true,
