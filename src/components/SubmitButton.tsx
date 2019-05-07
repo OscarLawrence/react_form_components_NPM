@@ -1,11 +1,12 @@
-import React from "react";
-import PropTypes from "prop-types";
+import * as React from "react";
 
 import { useSpring, animated } from "react-spring";
 
 import { Fonts } from "../styles";
 
-export const SubmitButton = props => {
+export interface SubmitButtonProps {}
+
+const SubmitButton: React.SFC<SubmitButtonProps> = props => {
   const styles = {
     cursor: "pointer",
     width: "100%",
@@ -41,3 +42,5 @@ export const SubmitButton = props => {
     </div>
   );
 };
+
+export default SubmitButton;
