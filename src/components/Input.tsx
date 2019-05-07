@@ -1,8 +1,8 @@
 import * as React from "react";
-
+import styled from "styled-components";
 import { useSpring, animated } from "react-spring";
 
-import Asterisk from "../assets/asterisk.png";
+const Asterisk = require("../assets/asterisk.png");
 
 import { Colors, Fonts } from "../styles";
 
@@ -16,13 +16,13 @@ export interface InputProps {
 }
 
 const Input: React.SFC<InputProps> = props => {
-  const style = {
-    border: "none",
-    outline: "none",
-    width: props.width || "100%",
-    fontSize: "1.5em",
-    fontFamily: props.fontFamily || Fonts.standard
-  };
+  const Input = styled.input`
+    border: none;
+    outline: none;
+    width: ${props.width || "100%"};
+    font-size: 1.5em;
+    font-family: ${props.fontFamily || Fonts.standard};
+  `;
   const Info = styled.div`
     text-align: left;
     pointer-events: none;
@@ -30,13 +30,6 @@ const Input: React.SFC<InputProps> = props => {
     font-weight: 400;
     font-family: ${props.fontFamily || Fonts.standard};
   `;
-  const pStyle = {
-    textAlign: "left",
-    pointerEvents: "none",
-    height: "1.5rem",
-    fontWeight: 400,
-    fontFamily: props.fontFamily || Fonts.standard
-  };
 
   const bStyle = {
     padding: 0,
@@ -83,12 +76,11 @@ const Input: React.SFC<InputProps> = props => {
   return (
     <div style={{ marginBottom: props.error ? "0.1em" : 0 }}>
       <label htmlFor="input" />
-      <input
+      <Input
         {...props}
         onFocus={handleFocus}
         aria-label={props.type ? props.type : "text"}
         onBlur={handleUnFocus}
-        style={style}
       />
       <animated.div style={spring}>
         <Info>
