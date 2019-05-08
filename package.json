@@ -1,39 +1,40 @@
 {
   "name": "vindao-react-forms",
-  "version": "0.1.16",
+  "version": "1.0.2",
   "description": "simple form components for react",
-  "main": "dist/index.js",
+  "main": "index.js",
+  "dependencies": {
+    "shortid": "^2.2.14"
+  },
   "devDependencies": {
+    "@types/node": "^12.0.0",
+    "@types/react": "^16.8.16",
+    "@types/react-dom": "^16.8.4",
+    "@types/styled-components": "^4.1.14",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-spring": "^8.0.20",
     "shortid": "^2.2.14",
     "styled-components": "^4.2.0",
-    "@types/node": "^12.0.0",
-    "@types/react": "^16.8.16",
-    "@types/react-dom": "^16.8.4",
-    "@types/styled-components": "^4.1.14",
-    "file-loader": "^3.0.1",
-    "image-webpack-loader": "^4.6.0",
-    "imagemin-webp-webpack-plugin": "^3.1.0",
-    "ts-loader": "^5.4.5",
-    "typescript": "^3.4.5",
-    "webpack": "^4.30.0",
-    "webpack-cleanup-plugin": "^0.5.1",
-    "webpack-cli": "^3.3.2"
+    "typescript": "^3.4.5"
   },
   "files": [
-    "dist/*"
+    "index.js",
+    "index.d.ts",
+    "styles.d.ts",
+    "styles.js",
+    "assets/*",
+    "components/*"
   ],
+  "types": "index.d.ts",
   "peerDependencies": {
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-spring": "^8.0.20",
-    "shortid": "^2.2.14",
     "styled-components": "^4.2.0"
   },
   "scripts": {
-    "build": "webpack --config config/webpack.config.js",
+    "build": "tsc --p src --outDir ./",
     "git": "git add . && git commit -m 'update' && git push origin master"
   },
   "keywords": [
