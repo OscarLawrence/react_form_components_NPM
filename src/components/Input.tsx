@@ -3,8 +3,6 @@ import * as React from "react";
 import styled from "styled-components";
 import { useSpring, animated } from "react-spring";
 
-const Asterisk = require("../assets/asterisk.png");
-
 import { Colors, Fonts } from "../styles";
 
 export interface InputProps {
@@ -25,14 +23,13 @@ const Input: React.SFC<InputProps> = props => {
   const [labelSpring, setLabelSpring] = useSpring(() => ({
     fontSize: "1.5em",
     color: Colors.subtle,
-    transform: "translateY(1.2em)"
+    transform: "translateY(1.2em)",
+    lineHeight: "1em"
   }));
   const [borderSpring, setBorderSpring] = useSpring(() => ({
-    backgroundColor: Colors.subtle
+    backgroundColor: props.error ? Colors.error : Colors.subtle
   }));
-  const Wrapper = styled.div`
-    margin-bottom: ${props.error ? "0.2em" : "0.1em"};
-  `;
+  const Wrapper = styled.div``;
   const Input = styled.input`
     background-color: transparent;
     position: relative;
@@ -44,8 +41,13 @@ const Input: React.SFC<InputProps> = props => {
     font-family: ${props.fontFamily || Fonts.standard};
   `;
   const Label = styled.label`
+    display: flex;
     font-weight: 400;
     font-family: ${props.fontFamily || Fonts.standard};
+  `;
+  const Asterisk = styled.div`
+    color: black;
+    transform: translateX(0.2em);
   `;
   const Underline = styled.div`
     padding: 0;
@@ -62,7 +64,8 @@ const Input: React.SFC<InputProps> = props => {
     setLabelSpring({
       fontSize: "1em",
       transform: "translateY(0em)",
-      color: Colors.highlight
+      color: Colors.highlight,
+      lineHeight: "1.5em"
     });
     setBorderSpring({
       backgroundColor: Colors.highlight
@@ -72,18 +75,23 @@ const Input: React.SFC<InputProps> = props => {
     e.preventDefault();
     setLabelSpring({
       fontSize: e.target.value === "" ? "1.5em" : "1em",
+      lineHeight: e.target.value === "" ? "1em" : "1.5em",
       transform:
         e.target.value === "" ? "translateY(1.25em)" : "translateY(0em)",
       color: Colors.subtle
     });
     setBorderSpring({
-      backgroundColor: Colors.subtle
+      backgroundColor: props.error ? Colors.error : Colors.subtle
     });
   };
+
   return (
     <Wrapper>
       <animated.div style={{ ...labelSpring, zIndex: -1 }}>
-        <Label>{props.label}</Label>
+        <Label>
+          {props.label}
+          {props.required ? <Asterisk>*</Asterisk> : null}
+        </Label>
       </animated.div>
       <Input
         {...props}

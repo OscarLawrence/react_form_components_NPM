@@ -22,7 +22,15 @@ const App: React.SFC<AppProps> = () => {
         <Input
           label="Test"
           onChange={onChange}
-          error={false}
+          error={true}
+          required
+          errorText="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nemo, dolorem. Odio laudantium molestias qui, error optio in, vel ea adipisci repellat harum debitis? Rerum laudantium ipsum doloremque soluta, quaerat molestiae non labore sequi nobis odio illo neque maiores voluptas ex mollitia voluptatem deleniti, repudiandae vero reprehenderit debitis autem. Commodi, mollitia?"
+        />
+        <Input
+          label="Test"
+          onChange={onChange}
+          error={true}
+          required
           errorText="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nemo, dolorem. Odio laudantium molestias qui, error optio in, vel ea adipisci repellat harum debitis? Rerum laudantium ipsum doloremque soluta, quaerat molestiae non labore sequi nobis odio illo neque maiores voluptas ex mollitia voluptatem deleniti, repudiandae vero reprehenderit debitis autem. Commodi, mollitia?"
         />
         <Select
