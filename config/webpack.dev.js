@@ -10,8 +10,13 @@ module.exports = {
     path: path.resolve("./dev/"),
     filename: "client.bundle.js"
   },
+  devtool: "source-map",
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".json", ".jsx"]
+  },
+  watchOptions: {
+    poll: true,
+    ignored: /node_modules/
   },
   module: {
     rules: [
@@ -20,7 +25,7 @@ module.exports = {
         exclude: [/node_modules/],
         loader: "ts-loader",
         options: {
-          configFile: path.resolve("./config/tsconfig.json")
+          configFile: path.resolve("./config/tsconfig.dev.json")
         }
       },
       {
@@ -39,8 +44,7 @@ module.exports = {
       }
     ]
   },
-  mode: "production",
-  target: "node",
+  mode: "development",
   plugins: [
     new HTMLwebpackPlugin({
       template: path.resolve("./src/template.html"),
@@ -68,7 +72,7 @@ module.exports = {
     new BrowserSyncPlugin({
       host: "localhost",
       port: 3000,
-      server: { baseDir: ["dist"] }
+      server: { baseDir: ["dev"] }
     })
   ]
 };

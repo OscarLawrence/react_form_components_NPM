@@ -1,6 +1,7 @@
 export const Colors = {
   subtle: "lightgrey",
-  highlight: "blue"
+  highlight: "blue",
+  error: "red"
 };
 
 export const Fonts = {

@@ -11,7 +11,7 @@ import { Colors, Fonts } from "../styles";
 export interface SelectProps {
   currentValue: string;
   options: object;
-  onChange: (e: React.ChangeEvent) => void;
+  onChange: any;
   hoverColor?: string;
   width?: string;
   fontFamily?: string;
@@ -92,6 +92,7 @@ const Select: React.SFC<SelectProps> = props => {
   };
   const handleSelect = (e: React.MouseEvent) => {
     e.preventDefault();
+    // @ts-ignore
     setValue(e.target.innerText);
     setOpen(false);
     props.onChange(e);

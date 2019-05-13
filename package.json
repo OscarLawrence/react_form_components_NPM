@@ -47,7 +47,7 @@
   },
   "scripts": {
     "build": "webpack --config config/webpack.prod.js",
-    "dev": "webpack --config config/webpack.dev.js",
+    "dev": "webpack --watch --config config/webpack.dev.js",
     "git": "git add . && git commit -m 'update' && git push origin master"
   },
   "keywords": [
