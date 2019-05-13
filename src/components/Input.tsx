@@ -8,6 +8,7 @@ import { Colors, Fonts } from "../styles";
 export interface InputProps {
   width?: string | number;
   fontFamily?: string;
+  style?: React.CSSProperties;
   onChange: (e: React.ChangeEvent) => void;
   name?: string;
   id?: string;

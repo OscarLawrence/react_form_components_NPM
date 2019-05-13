@@ -97,15 +97,18 @@ const Select: React.SFC<SelectProps> = props => {
     setOpen(false);
     props.onChange(e);
   };
+  const Arrow = styled.i`
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 0.25em;
+    transform: translateX(0.3em) translateY(-0.15em) rotate(45deg);
+  `;
   return (
     <div style={selectBoxStyles} id={selectID} className="selectBox">
       <SelectButton onClick={toggle}>
         {currentValue}
-        <img
-          style={{ float: "right", width: ".8em" }}
-          src={DropDownIcon}
-          alt=""
-        />
+        <Arrow />
       </SelectButton>
       {open ? (
         <Options className="selectOptions">
