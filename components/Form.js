@@ -20,6 +20,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __importStar(require("react"));
 var Form = function (props) {
-    return (React.createElement("form", __assign({ style: { display: "block" }, noValidate: true }, props), props.children));
+    return (React.createElement("form", __assign({ style: __assign({}, props.style), noValidate: true }, props), props.children));
 };
 exports.default = Form;

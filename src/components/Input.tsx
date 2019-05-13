@@ -9,6 +9,10 @@ import { Colors, Fonts } from "../styles";
 export interface InputProps {
   width?: string | number;
   fontFamily?: string;
+  onChange: (e: React.ChangeEvent) => void;
+  name?: string;
+  id?: string;
+  className?: string;
   error?: boolean;
   required?: boolean;
   type?: string;
@@ -16,6 +20,9 @@ export interface InputProps {
 }
 
 const Input: React.SFC<InputProps> = props => {
+  const InputWrapper = styled.div`
+    margin-bottom: ${props.error ? "0.2em" : "0.1em"};
+  `;
   const Input = styled.input`
     border: none;
     outline: none;
@@ -23,8 +30,9 @@ const Input: React.SFC<InputProps> = props => {
     font-size: 1.5em;
     font-family: ${props.fontFamily || Fonts.standard};
   `;
-  const Info = styled.div`
+  const Info = styled.label`
     text-align: left;
+    display: block;
     pointer-events: none;
     height: 1.5rem;
     font-weight: 400;
@@ -74,23 +82,16 @@ const Input: React.SFC<InputProps> = props => {
     });
   };
   return (
-    <div style={{ marginBottom: props.error ? "0.1em" : 0 }}>
-      <label htmlFor="input" />
-      <Input
-        {...props}
-        onFocus={handleFocus}
-        aria-label={props.type ? props.type : "text"}
-        onBlur={handleUnFocus}
-      />
+    <InputWrapper style={{ marginBottom: props.error ? "0.1em" : 0 }}>
       <animated.div style={spring}>
-        <Info>
+        <Info htmlFor={props.type || "text"}>
           {props.label}{" "}
           {props.required ? (
             <img
               style={{
                 width: "7.5px",
                 height: "7.5px",
-                transform: "translateY(-150%)"
+                transform: "translateY(-100%)"
               }}
               alt="is required asterisk"
               src={Asterisk}
@@ -98,6 +99,13 @@ const Input: React.SFC<InputProps> = props => {
           ) : null}
         </Info>
       </animated.div>
+      <Input
+        {...props}
+        onFocus={handleFocus}
+        aria-label={props.type || "text"}
+        onBlur={handleUnFocus}
+      />
+
       <animated.div style={{ ...borderSpring, ...bStyle }} />
       {props.error ? (
         <div
@@ -112,7 +120,7 @@ const Input: React.SFC<InputProps> = props => {
       ) : (
         ""
       )}
-    </div>
+    </InputWrapper>
   );
 };
 

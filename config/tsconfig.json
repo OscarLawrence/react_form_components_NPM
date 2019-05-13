@@ -1,7 +1,10 @@
 {
   "compilerOptions": {
+    "outDir": "../dist/",
     "sourceMap": false,
     "noImplicitAny": false,
+    "removeComments": true,
+    "moduleResolution": "node",
     "module": "commonjs",
     "target": "es5",
     "jsx": "react",
@@ -9,5 +12,5 @@
     "declaration": true,
     "esModuleInterop": true
   },
-  "include": ["./**/*"]
+  "files": ["../src/index.ts"]
 }

@@ -31,8 +31,9 @@ var react_spring_1 = require("react-spring");
 var Asterisk = require("../assets/asterisk.png");
 var styles_1 = require("../styles");
 var Input = function (props) {
-    var Input = styled_components_1.default.input(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n    border: none;\n    outline: none;\n    width: ", ";\n    font-size: 1.5em;\n    font-family: ", ";\n  "], ["\n    border: none;\n    outline: none;\n    width: ", ";\n    font-size: 1.5em;\n    font-family: ", ";\n  "])), props.width || "100%", props.fontFamily || styles_1.Fonts.standard);
-    var Info = styled_components_1.default.div(templateObject_2 || (templateObject_2 = __makeTemplateObject(["\n    text-align: left;\n    pointer-events: none;\n    height: 1.5rem;\n    font-weight: 400;\n    font-family: ", ";\n  "], ["\n    text-align: left;\n    pointer-events: none;\n    height: 1.5rem;\n    font-weight: 400;\n    font-family: ", ";\n  "])), props.fontFamily || styles_1.Fonts.standard);
+    var InputWrapper = styled_components_1.default.div(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n    margin-bottom: ", ";\n  "], ["\n    margin-bottom: ", ";\n  "])), props.error ? "0.2em" : "0.1em");
+    var Input = styled_components_1.default.input(templateObject_2 || (templateObject_2 = __makeTemplateObject(["\n    border: none;\n    outline: none;\n    width: ", ";\n    font-size: 1.5em;\n    font-family: ", ";\n  "], ["\n    border: none;\n    outline: none;\n    width: ", ";\n    font-size: 1.5em;\n    font-family: ", ";\n  "])), props.width || "100%", props.fontFamily || styles_1.Fonts.standard);
+    var Info = styled_components_1.default.label(templateObject_3 || (templateObject_3 = __makeTemplateObject(["\n    text-align: left;\n    display: block;\n    pointer-events: none;\n    height: 1.5rem;\n    font-weight: 400;\n    font-family: ", ";\n  "], ["\n    text-align: left;\n    display: block;\n    pointer-events: none;\n    height: 1.5rem;\n    font-weight: 400;\n    font-family: ", ";\n  "])), props.fontFamily || styles_1.Fonts.standard);
     var bStyle = {
         padding: 0,
         height: "2px",
@@ -71,18 +72,17 @@ var Input = function (props) {
             backgroundColor: styles_1.Colors.subtle
         });
     };
-    return (React.createElement("div", { style: { marginBottom: props.error ? "0.1em" : 0 } },
-        React.createElement("label", { htmlFor: "input" }),
-        React.createElement(Input, __assign({}, props, { onFocus: handleFocus, "aria-label": props.type ? props.type : "text", onBlur: handleUnFocus })),
+    return (React.createElement(InputWrapper, { style: { marginBottom: props.error ? "0.1em" : 0 } },
         React.createElement(react_spring_1.animated.div, { style: spring },
-            React.createElement(Info, null,
+            React.createElement(Info, { htmlFor: props.type || "text" },
                 props.label,
                 " ",
                 props.required ? (React.createElement("img", { style: {
                         width: "7.5px",
                         height: "7.5px",
-                        transform: "translateY(-150%)"
+                        transform: "translateY(-100%)"
                     }, alt: "is required asterisk", src: Asterisk })) : null)),
+        React.createElement(Input, __assign({}, props, { onFocus: handleFocus, "aria-label": props.type || "text", onBlur: handleUnFocus })),
         React.createElement(react_spring_1.animated.div, { style: __assign({}, borderSpring, bStyle) }),
         props.error ? (React.createElement("div", { style: {
                 textAlign: "left",
@@ -91,4 +91,4 @@ var Input = function (props) {
             } }, props.error)) : ("")));
 };
 exports.default = Input;
-var templateObject_1, templateObject_2;
+var templateObject_1, templateObject_2, templateObject_3;

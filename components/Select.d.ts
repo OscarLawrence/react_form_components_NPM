@@ -2,7 +2,7 @@ import * as React from "react";
 export interface SelectProps {
     currentValue: string;
     options: object;
-    onChange?: (value: any) => void;
+    onChange: (value: any) => void;
     hoverColor?: string;
     width?: string;
     fontFamily?: string;

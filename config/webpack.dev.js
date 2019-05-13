@@ -1,12 +1,14 @@
 const path = require("path");
 
 const ImageminWebpWebpackPlugin = require("imagemin-webp-webpack-plugin");
+const BrowserSyncPlugin = require("browser-sync-webpack-plugin");
+const HTMLwebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  entry: [path.resolve("./src/")],
+  entry: [path.resolve("./src/dev.tsx")],
   output: {
-    path: path.resolve("./dist"),
-    filename: "index.js"
+    path: path.resolve("./dev/"),
+    filename: "client.bundle.js"
   },
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".json", ".jsx"]
@@ -40,6 +42,10 @@ module.exports = {
   mode: "production",
   target: "node",
   plugins: [
+    new HTMLwebpackPlugin({
+      template: path.resolve("./src/template.html"),
+      inject: true
+    }),
     new ImageminWebpWebpackPlugin({
       mozjpeg: {
         progressive: true,
@@ -58,6 +64,11 @@ module.exports = {
       webp: {
         quality: 75
       }
+    }),
+    new BrowserSyncPlugin({
+      host: "localhost",
+      port: 3000,
+      server: { baseDir: ["dist"] }
     })
   ]
 };

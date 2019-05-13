@@ -11,7 +11,7 @@ import { Colors, Fonts } from "../styles";
 export interface SelectProps {
   currentValue: string;
   options: object;
-  onChange?: (value) => void;
+  onChange: (e: React.ChangeEvent) => void;
   hoverColor?: string;
   width?: string;
   fontFamily?: string;
@@ -86,17 +86,15 @@ const Select: React.SFC<SelectProps> = props => {
   `;
 
   // ______handler______
-  const toggle = e => {
+  const toggle = (e: React.MouseEvent) => {
     e.preventDefault();
     setOpen(!open);
   };
-  const handleSelect = e => {
+  const handleSelect = (e: React.MouseEvent) => {
     e.preventDefault();
     setValue(e.target.innerText);
     setOpen(false);
-    if (props.onChange) {
-      props.onChange(e.target.attributes.value.value);
-    }
+    props.onChange(e);
   };
   return (
     <div style={selectBoxStyles} id={selectID} className="selectBox">

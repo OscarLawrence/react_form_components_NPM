@@ -1,10 +1,12 @@
 import * as React from "react";
 
-export interface FormProps {}
+export interface FormProps {
+  style?: React.CSSProperties;
+}
 
 const Form: React.SFC<FormProps> = props => {
   return (
-    <form style={{ display: "block" }} noValidate {...props}>
+    <form style={{ ...props.style }} noValidate {...props}>
       {props.children}
     </form>
   );
