@@ -1,8 +1,13 @@
 import * as React from "react";
-import { FontFamilyProperty, WidthProperty } from "csstype";
+import { FontFamilyProperty, WidthProperty, ColorProperty } from "csstype";
 export interface InputProps {
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     label: string;
+    labelSubtleColor?: ColorProperty;
+    labelHighlightColor?: ColorProperty;
+    textColor?: ColorProperty;
+    asteriskColor?: ColorProperty;
+    errorColor?: ColorProperty;
     width?: WidthProperty<string | number>;
     fontFamily?: FontFamilyProperty;
     style?: React.CSSProperties;

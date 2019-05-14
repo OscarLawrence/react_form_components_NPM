@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FontFamilyProperty, HeightProperty, WidthProperty, PaddingProperty, BorderRadiusProperty, BorderColorProperty, BorderStyleProperty, BorderWidthProperty } from "csstype";
+import { FontFamilyProperty, HeightProperty, WidthProperty, PaddingProperty, BorderRadiusProperty, BorderColorProperty, BorderStyleProperty, BorderWidthProperty, ColorProperty } from "csstype";
 export interface TextFieldProps {
     name?: string;
     fontFamily?: FontFamilyProperty;
@@ -8,6 +8,8 @@ export interface TextFieldProps {
     width?: WidthProperty<string | number>;
     padding?: PaddingProperty<string | number>;
     placeholder?: string;
+    placeholderColor?: ColorProperty;
+    textColor?: ColorProperty;
     className?: string;
     id?: string;
     borderRadius?: BorderRadiusProperty<string | number>;
