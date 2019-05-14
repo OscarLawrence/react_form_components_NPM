@@ -6,7 +6,10 @@ import {
   HeightProperty,
   WidthProperty,
   PaddingProperty,
-  BorderRadiusProperty
+  BorderRadiusProperty,
+  BorderColorProperty,
+  BorderStyleProperty,
+  BorderWidthProperty
 } from "csstype";
 
 export interface TextFieldProps {
@@ -20,8 +23,8 @@ export interface TextFieldProps {
   className?: string;
   id?: string;
   borderRadius?: BorderRadiusProperty<string | number>;
-  borderColor?: BorderColorProperty<string | number>;
-  borderStyle?: BorderStyleProperty<string | number>;
+  borderColor?: BorderColorProperty;
+  borderStyle?: BorderStyleProperty;
   borderWidth?: BorderWidthProperty<string | number>;
 }
 
