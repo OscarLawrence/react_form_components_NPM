@@ -1,7 +1,6 @@
 const path = require("path");
 const Configs = require("./configs");
 
-const ImageminWebpWebpackPlugin = require("imagemin-webp-webpack-plugin");
 const GeneratePackageJson = require("generate-package-json-webpack-plugin");
 
 module.exports = {
@@ -27,45 +26,12 @@ module.exports = {
             configFile: path.resolve("./config/tsconfig.json")
           }
         }
-      },
-      {
-        test: /\.(gif|png|jpe?g|svg|webp)$/i,
-        use: [
-          {
-            loader: "file-loader",
-            options: {
-              name: "assets/[name].[hash:8].[ext]"
-            }
-          },
-          {
-            loader: "image-webpack-loader"
-          }
-        ]
       }
     ]
   },
   mode: "production",
   plugins: [
-    new GeneratePackageJson(Configs.PackageValues, Configs.PackageFilename),
-    new ImageminWebpWebpackPlugin({
-      mozjpeg: {
-        progressive: true,
-        quality: 65
-      },
-      optipng: {
-        enabled: true
-      },
-      pngquant: {
-        quality: "65-90",
-        speed: 4
-      },
-      gifsicle: {
-        interlaced: false
-      },
-      webp: {
-        quality: 75
-      }
-    })
+    new GeneratePackageJson(Configs.PackageValues, Configs.PackageFilename)
   ],
   externals: {
     react: "commonjs react"

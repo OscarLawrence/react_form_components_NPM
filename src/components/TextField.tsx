@@ -1,26 +1,40 @@
 import * as React from "react";
 import styled from "styled-components";
 import { Colors, Fonts } from "../styles";
+import {
+  FontFamilyProperty,
+  HeightProperty,
+  WidthProperty,
+  PaddingProperty,
+  BorderRadiusProperty
+} from "csstype";
 
 export interface TextFieldProps {
   name?: string;
-  fontFamily?: string;
+  fontFamily?: FontFamilyProperty;
   onChange: (e: React.ChangeEvent) => void;
-  height?: string;
-  width?: string;
+  height?: HeightProperty<string | number>;
+  width?: WidthProperty<string | number>;
+  padding?: PaddingProperty<string | number>;
   placeholder?: string;
   className?: string;
   id?: string;
+  borderRadius?: BorderRadiusProperty<string | number>;
+  borderColor?: BorderColorProperty<string | number>;
+  borderStyle?: BorderStyleProperty<string | number>;
+  borderWidth?: BorderWidthProperty<string | number>;
 }
 
 const TextField: React.SFC<TextFieldProps> = props => {
   const Wrapper = styled.div`
-    border: solid 1.5px ${Colors.subtle};
-    border-radius: 3px;
-    padding: 1em;
+    border-color: ${props.borderColor || Colors.subtle};
+    border-radius: ${props.borderRadius || "3px"};
+    border-width: ${props.borderWidth || "1.5px"};
+    border-style: ${props.borderStyle || "solid"};
+    padding: ${props.padding || "1em"};
     margin: 0 auto;
     height: ${props.height || "100%"}
-    width: ${props.width || "95%"};
+    width: ${props.width || "100%"};
     font-family: ${props.fontFamily || Fonts.standard};
     box-sizing: border-box;
   `;

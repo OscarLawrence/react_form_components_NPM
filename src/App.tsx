@@ -3,6 +3,8 @@ import styled from "styled-components";
 
 import { Form, Input, Select, TextField, SubmitButton } from "./index";
 
+import { InputType } from "zlib";
+
 export interface AppProps {}
 
 const Wrapper = styled.div`
@@ -10,10 +12,10 @@ const Wrapper = styled.div`
 `;
 
 const App: React.SFC<AppProps> = () => {
-  const onChange = (e: React.ChangeEvent) => {
-    console.log(e);
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.value);
   };
-  const onSelectChange = e => {
+  const onSelectChange = (e: React.FormEvent<HTMLDivElement>) => {
     console.log(e);
   };
   return (
@@ -36,9 +38,9 @@ const App: React.SFC<AppProps> = () => {
         <Select
           currentValue="Test"
           options={{ Test: "Test", Test1: "Test1" }}
-          onChange={{ onSelectChange }}
+          onChange={onSelectChange}
         />
-        <TextField onChange={onChange} />
+        <TextField onChange={onChange} placeholder="your text" height="20em" />
         <SubmitButton>Submit</SubmitButton>
       </Form>
     </Wrapper>

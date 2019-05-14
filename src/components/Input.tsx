@@ -4,12 +4,14 @@ import styled from "styled-components";
 import { useSpring, animated } from "react-spring";
 
 import { Colors, Fonts } from "../styles";
+import { FontFamilyProperty, WidthProperty } from "csstype";
 
 export interface InputProps {
-  width?: string | number;
-  fontFamily?: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  label: string;
+  width?: WidthProperty<string | number>;
+  fontFamily?: FontFamilyProperty;
   style?: React.CSSProperties;
-  onChange: (e: React.ChangeEvent) => void;
   name?: string;
   id?: string;
   className?: string;
@@ -17,7 +19,6 @@ export interface InputProps {
   errorText?: string;
   required?: boolean;
   type?: string;
-  label: string;
 }
 
 const Input: React.SFC<InputProps> = props => {
@@ -28,7 +29,9 @@ const Input: React.SFC<InputProps> = props => {
     lineHeight: "1em"
   }));
   const [borderSpring, setBorderSpring] = useSpring(() => ({
-    backgroundColor: props.error ? Colors.error : Colors.subtle
+    border: `1px solid`,
+    borderColor: props.error ? Colors.error : Colors.subtle,
+    borderRadius: "5px"
   }));
   const Wrapper = styled.div``;
   const Input = styled.input`
@@ -52,8 +55,7 @@ const Input: React.SFC<InputProps> = props => {
   `;
   const Underline = styled.div`
     padding: 0;
-    height: 2px;
-    border-radius: 5px;
+    height: 0;
     margin: 0 auto;
   `;
   const Error = styled.div`
@@ -69,7 +71,7 @@ const Input: React.SFC<InputProps> = props => {
       lineHeight: "1.5em"
     });
     setBorderSpring({
-      backgroundColor: Colors.highlight
+      borderColor: Colors.highlight
     });
   };
   const handleUnFocus = e => {
@@ -82,7 +84,7 @@ const Input: React.SFC<InputProps> = props => {
       color: Colors.subtle
     });
     setBorderSpring({
-      backgroundColor: props.error ? Colors.error : Colors.subtle
+      borderColor: props.error ? Colors.error : Colors.subtle
     });
   };
 
@@ -100,9 +102,7 @@ const Input: React.SFC<InputProps> = props => {
         aria-label={props.type || "text"}
         onBlur={handleUnFocus}
       />
-      <animated.div style={borderSpring}>
-        <Underline />
-      </animated.div>
+      <animated.div style={borderSpring}>{/* <Underline /> */}</animated.div>
       {props.error ? <Error>{props.errorText}</Error> : null}
     </Wrapper>
   );

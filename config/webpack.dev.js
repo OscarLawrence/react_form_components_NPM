@@ -1,6 +1,5 @@
 const path = require("path");
 
-const ImageminWebpWebpackPlugin = require("imagemin-webp-webpack-plugin");
 const BrowserSyncPlugin = require("browser-sync-webpack-plugin");
 const HTMLwebpackPlugin = require("html-webpack-plugin");
 
@@ -27,20 +26,6 @@ module.exports = {
         options: {
           configFile: path.resolve("./config/tsconfig.dev.json")
         }
-      },
-      {
-        test: /\.(gif|png|jpe?g|svg|webp)$/i,
-        use: [
-          {
-            loader: "file-loader",
-            options: {
-              name: "assets/[name].[hash:8].[ext]"
-            }
-          },
-          {
-            loader: "image-webpack-loader"
-          }
-        ]
       }
     ]
   },
@@ -49,25 +34,6 @@ module.exports = {
     new HTMLwebpackPlugin({
       template: path.resolve("./src/template.html"),
       inject: true
-    }),
-    new ImageminWebpWebpackPlugin({
-      mozjpeg: {
-        progressive: true,
-        quality: 65
-      },
-      optipng: {
-        enabled: true
-      },
-      pngquant: {
-        quality: "65-90",
-        speed: 4
-      },
-      gifsicle: {
-        interlaced: false
-      },
-      webp: {
-        quality: 75
-      }
     }),
     new BrowserSyncPlugin({
       host: "localhost",

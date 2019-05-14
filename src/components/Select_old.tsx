@@ -1,23 +1,24 @@
 import * as React from "react";
 import styled from "styled-components";
-import { useTransition, useSpring, animated } from "react-spring";
+import { useSpring, animated } from "react-spring";
+
 import { generate } from "shortid";
 
 import { Colors, Fonts } from "../styles";
-import { WidthProperty, FontFamilyProperty, ColorProperty } from "csstype";
 
 export interface SelectProps {
   currentValue: string;
   options: object;
-  onChange: (e: React.FormEvent<HTMLDivElement>) => void;
-  hoverColor?: ColorProperty;
-  width?: WidthProperty<string | number>;
-  fontFamily?: FontFamilyProperty;
+  onChange: any;
+  hoverColor?: string;
+  width?: string;
+  fontFamily?: string;
 }
 
 const Select: React.SFC<SelectProps> = props => {
+  // useState for open/close
   const [open, setOpen] = React.useState(false);
-  const [currentValue, setCurrentValue] = React.useState(props.currentValue);
+  const [currentValue, setValue] = React.useState(props.currentValue);
   const [keyUser, setKeyUser] = React.useState(false);
 
   React.useEffect(() => {
@@ -29,20 +30,14 @@ const Select: React.SFC<SelectProps> = props => {
     };
   });
 
-  // animations
-  const transitions = useTransition(open, null, {
-    from: { opacity: 0 },
-    enter: { opacity: 1 },
-    leave: { opacity: 0 }
-  });
-  const selectID = generate();
-
   const kbUser = e => {
     if (e.keyCode === 9) {
       setKeyUser(true);
       document.removeEventListener("keydown", kbUser, true);
     }
   };
+
+  const selectID = generate();
 
   const handleOutsideClick = e => {
     e.preventDefault();
@@ -51,19 +46,55 @@ const Select: React.SFC<SelectProps> = props => {
       setOpen(false);
     }
   };
-  const SelectWrapper = styled.div`
-    margin: 1em;
+
+  // _______Styles__________
+  //__outerDiv Styles__
+  const selectBoxStyles = {
+    left: 0,
+    right: 0,
+    width: "100%",
+    margin: "1em auto"
+  };
+
+  //__options div styles__
+  const Options = styled.div`
+    border-style: none solid solid solid;
+    border-width: 0px;
+    border-radius: 5px;
+    box-shadow: 0px 12px 37px 1px rgba(0, 0, 0, 0.47);
+    position: absolute;
     width: ${props.width || 100};
     font-family: ${props.fontFamily || Fonts.standard};
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    z-index: 999;
   `;
+  //__selectButton Style__
   const SelectButton = styled.button`
-    padding: 0 0.5em 0 0;
+    border-style: none none solid none;
+    border-width: 1px;
+    border-color: black;
     cursor: pointer;
-    background: none;
-    border: none;
-    border-bottom: solid;
+    font-family: ${props.fontFamily || Fonts.standard};
+    width: ${props.width || 100};
+    text-align: left;
+    background-color: transparent;
     outline: ${keyUser ? "  " : "none"};
   `;
+
+  // ______handler______
+  const toggle = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setOpen(!open);
+  };
+  const handleSelect = (e: React.MouseEvent) => {
+    e.preventDefault();
+    // @ts-ignore
+    setValue(e.target.innerText);
+    setOpen(false);
+    props.onChange(e);
+  };
   const Arrow = styled.i`
     border: solid black;
     border-width: 0 3px 3px 0;
@@ -71,49 +102,30 @@ const Select: React.SFC<SelectProps> = props => {
     padding: 0.25em;
     transform: translateX(0.3em) translateY(-0.15em) rotate(45deg);
   `;
-  const toggle = e => {
-    e.preventDefault();
-    setOpen(!open);
-  };
-  const handleSelect = (e: React.FormEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    // @ts-ignore
-    setCurrentValue(e.target.innerText);
-    setOpen(false);
-    props.onChange(e);
-  };
   return (
-    <SelectWrapper {...props} id={selectID}>
+    <div style={selectBoxStyles} id={selectID} className="selectBox">
       <SelectButton onClick={toggle}>
         {currentValue}
         <Arrow />
       </SelectButton>
-      {transitions.map(
-        transitionProps =>
-          transitionProps.item && (
-            <animated.div
-              key={transitionProps.key}
-              style={{ ...transitionProps.props, position: "absolute" }}
-            >
-              <div style={{ width: "100%" }}>
-                {Object.keys(props.options).map((optionKey, i) => {
-                  return (
-                    <SelectOption
-                      keyuser={keyUser}
-                      onClick={handleSelect}
-                      value={optionKey}
-                      key={i}
-                      hoverColor={props.hoverColor}
-                    >
-                      {props.options[optionKey]}
-                    </SelectOption>
-                  );
-                })}
-              </div>
-            </animated.div>
-          )
-      )}
-    </SelectWrapper>
+      {open ? (
+        <Options className="selectOptions">
+          {Object.keys(props.options).map((optionKey, i) => {
+            return (
+              <SelectOption
+                keyuser={keyUser}
+                onClick={handleSelect}
+                value={optionKey}
+                key={i}
+                hoverColor={props.hoverColor}
+              >
+                {props.options[optionKey]}
+              </SelectOption>
+            );
+          })}
+        </Options>
+      ) : null}
+    </div>
   );
 };
 
