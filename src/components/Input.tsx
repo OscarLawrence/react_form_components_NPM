@@ -25,7 +25,7 @@ const Input: React.SFC<InputProps> = props => {
   const [labelSpring, setLabelSpring] = useSpring(() => ({
     fontSize: "1.5em",
     color: Colors.subtle,
-    transform: "translateY(1.2em)",
+    transform: "translateY(1.15em)",
     lineHeight: "1em"
   }));
   const [borderSpring, setBorderSpring] = useSpring(() => ({
@@ -55,11 +55,6 @@ const Input: React.SFC<InputProps> = props => {
     color: black;
     transform: translateX(0.2em);
   `;
-  const Underline = styled.div`
-    padding: 0;
-    height: 0;
-    margin: 0 auto;
-  `;
   const Error = styled.div`
     font-family: ${Fonts.error};
     color: ${Colors.error};
@@ -83,7 +78,7 @@ const Input: React.SFC<InputProps> = props => {
       fontSize: e.target.value === "" ? "1.5em" : "1em",
       lineHeight: e.target.value === "" ? "1em" : "1.5em",
       transform:
-        e.target.value === "" ? "translateY(1.25em)" : "translateY(0em)",
+        e.target.value === "" ? "translateY(1.15em)" : "translateY(0em)",
       color: Colors.subtle
     });
     setBorderSpring({
@@ -105,7 +100,7 @@ const Input: React.SFC<InputProps> = props => {
         aria-label={props.type || "text"}
         onBlur={handleUnFocus}
       />
-      <animated.div style={borderSpring}>{/* <Underline /> */}</animated.div>
+      <animated.div style={borderSpring} />
       {props.error ? <Error>{props.errorText}</Error> : null}
     </Wrapper>
   );
