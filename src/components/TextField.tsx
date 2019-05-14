@@ -9,7 +9,8 @@ import {
   BorderRadiusProperty,
   BorderColorProperty,
   BorderStyleProperty,
-  BorderWidthProperty
+  BorderWidthProperty,
+  ColorProperty
 } from "csstype";
 
 export interface TextFieldProps {
@@ -20,6 +21,8 @@ export interface TextFieldProps {
   width?: WidthProperty<string | number>;
   padding?: PaddingProperty<string | number>;
   placeholder?: string;
+  placeholderColor?: ColorProperty;
+  textColor?: ColorProperty;
   className?: string;
   id?: string;
   borderRadius?: BorderRadiusProperty<string | number>;
@@ -43,12 +46,21 @@ const TextField: React.SFC<TextFieldProps> = props => {
     box-sizing: border-box;
   `;
   const Textarea = styled.textarea`
+    background-color: transparent;
+    color: ${props.textColor || "black"}
     width: 100%;
     height: 100%;
     outline: none;
     font-size: 1.25em;
     resize: none;
     border: none;
+    ::placeholder,
+  ::-webkit-textarea-placeholder {
+    color: ${props.placeholderColor || Colors.subtle};
+  }
+  :-ms-textarea-placeholder {
+     color: ${props.placeholderColor || Colors.subtle};
+  }
   `;
   return (
     <Wrapper>

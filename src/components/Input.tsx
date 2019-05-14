@@ -4,11 +4,16 @@ import styled from "styled-components";
 import { useSpring, animated } from "react-spring";
 
 import { Colors, Fonts } from "../styles";
-import { FontFamilyProperty, WidthProperty } from "csstype";
+import { FontFamilyProperty, WidthProperty, ColorProperty } from "csstype";
 
 export interface InputProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   label: string;
+  labelSubtleColor?: ColorProperty;
+  labelHighlightColor?: ColorProperty;
+  textColor?: ColorProperty;
+  asteriskColor?: ColorProperty;
+  errorColor?: ColorProperty;
   width?: WidthProperty<string | number>;
   fontFamily?: FontFamilyProperty;
   style?: React.CSSProperties;
@@ -24,7 +29,7 @@ export interface InputProps {
 const Input: React.SFC<InputProps> = props => {
   const [labelSpring, setLabelSpring] = useSpring(() => ({
     fontSize: "1.5em",
-    color: Colors.subtle,
+    color: props.labelSubtleColor || Colors.subtle,
     transform: "translateY(1.15em)",
     lineHeight: "1em"
   }));
@@ -38,6 +43,7 @@ const Input: React.SFC<InputProps> = props => {
   `;
   const Input = styled.input`
     background-color: transparent;
+    color: ${props.textColor || "black"};
     position: relative;
     z-index: 1;
     border: none;
@@ -52,12 +58,12 @@ const Input: React.SFC<InputProps> = props => {
     font-family: ${props.fontFamily || Fonts.standard};
   `;
   const Asterisk = styled.div`
-    color: black;
+    color: ${props.asteriskColor || "black"};
     transform: translateX(0.2em);
   `;
   const Error = styled.div`
     font-family: ${Fonts.error};
-    color: ${Colors.error};
+    color: ${props.errorColor || Colors.error};
     text-align: left;
   `;
   const handleFocus = e => {
@@ -65,7 +71,7 @@ const Input: React.SFC<InputProps> = props => {
     setLabelSpring({
       fontSize: "1em",
       transform: "translateY(0em)",
-      color: Colors.highlight,
+      color: props.labelHighlightColor || Colors.highlight,
       lineHeight: "1.5em"
     });
     setBorderSpring({
@@ -79,7 +85,7 @@ const Input: React.SFC<InputProps> = props => {
       lineHeight: e.target.value === "" ? "1em" : "1.5em",
       transform:
         e.target.value === "" ? "translateY(1.15em)" : "translateY(0em)",
-      color: Colors.subtle
+      color: props.labelSubtleColor || Colors.subtle
     });
     setBorderSpring({
       borderColor: props.error ? Colors.error : Colors.subtle
