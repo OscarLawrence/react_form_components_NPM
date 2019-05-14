@@ -61,6 +61,7 @@ const Input: React.SFC<InputProps> = props => {
   const Error = styled.div`
     font-family: ${Fonts.error};
     color: ${Colors.error};
+    text-align: left;
   `;
   const handleFocus = e => {
     e.preventDefault();
