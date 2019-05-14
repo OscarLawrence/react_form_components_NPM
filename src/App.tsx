@@ -18,23 +18,32 @@ const App: React.SFC<AppProps> = () => {
   const onSelectChange = (e: React.FormEvent<HTMLDivElement>) => {
     console.log(e);
   };
+  const InputWrapper = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  `;
   return (
     <Wrapper>
       <Form>
-        <Input
-          label="Test"
-          onChange={onChange}
-          error={true}
-          required
-          errorText="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nemo, dolorem. Odio laudantium molestias qui, error optio in, vel ea adipisci repellat harum debitis? Rerum laudantium ipsum doloremque soluta, quaerat molestiae non labore sequi nobis odio illo neque maiores voluptas ex mollitia voluptatem deleniti, repudiandae vero reprehenderit debitis autem. Commodi, mollitia?"
-        />
-        <Input
-          label="Test"
-          onChange={onChange}
-          error={true}
-          required
-          errorText="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nemo, dolorem. Odio laudantium molestias qui, error optio in, vel ea adipisci repellat harum debitis? Rerum laudantium ipsum doloremque soluta, quaerat molestiae non labore sequi nobis odio illo neque maiores voluptas ex mollitia voluptatem deleniti, repudiandae vero reprehenderit debitis autem. Commodi, mollitia?"
-        />
+        <InputWrapper>
+          <Input
+            label="Test"
+            width="40%"
+            onChange={onChange}
+            error={true}
+            required
+            errorText="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nemo, dolorem. Odio laudantium molestias qui, error optio in, vel ea adipisci repellat harum debitis? Rerum laudantium ipsum doloremque soluta, quaerat molestiae non labore sequi nobis odio illo neque maiores voluptas ex mollitia voluptatem deleniti, repudiandae vero reprehenderit debitis autem. Commodi, mollitia?"
+          />
+          <Input
+            label="Test"
+            width="40%"
+            onChange={onChange}
+            error={true}
+            required
+            errorText="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nemo, dolorem. Odio laudantium molestias qui, error optio in, vel ea adipisci repellat harum debitis? Rerum laudantium ipsum doloremque soluta, quaerat molestiae non labore sequi nobis odio illo neque maiores voluptas ex mollitia voluptatem deleniti, repudiandae vero reprehenderit debitis autem. Commodi, mollitia?"
+          />
+        </InputWrapper>
         <Select
           currentValue="Test"
           options={{ Test: "Test", Test1: "Test1" }}

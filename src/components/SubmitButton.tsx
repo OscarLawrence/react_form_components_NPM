@@ -19,6 +19,7 @@ export interface SubmitButtonProps {
   width?: WidthProperty<string | number>;
   borderRadius?: BorderRadiusProperty<string | number>;
   padding?: PaddingProperty<string | number>;
+  style?: React.CSSProperties;
 }
 
 const SubmitButton: React.SFC<SubmitButtonProps> = props => {

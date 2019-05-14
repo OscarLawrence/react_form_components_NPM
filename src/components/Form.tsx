@@ -1,4 +1,5 @@
 import * as React from "react";
+import styled from "styled-components";
 
 export interface FormProps {
   style?: React.CSSProperties;
@@ -8,10 +9,11 @@ export interface FormProps {
 }
 
 const Form: React.SFC<FormProps> = props => {
+  const FormStyle = styled.form``;
   return (
-    <form {...props} noValidate>
+    <FormStyle {...props} noValidate>
       {props.children}
-    </form>
+    </FormStyle>
   );
 };
 

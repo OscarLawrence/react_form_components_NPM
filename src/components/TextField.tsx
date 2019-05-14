@@ -26,6 +26,7 @@ export interface TextFieldProps {
   borderColor?: BorderColorProperty;
   borderStyle?: BorderStyleProperty;
   borderWidth?: BorderWidthProperty<string | number>;
+  style?: React.CSSProperties;
 }
 
 const TextField: React.SFC<TextFieldProps> = props => {

@@ -10,6 +10,7 @@ export interface SelectProps {
   currentValue: string;
   options: object;
   onChange: (e: React.FormEvent<HTMLDivElement>) => void;
+  style?: React.CSSProperties;
   hoverColor?: ColorProperty;
   width?: WidthProperty<string | number>;
   fontFamily?: FontFamilyProperty;

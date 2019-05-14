@@ -4,11 +4,17 @@ import styled from "styled-components";
 import { useSpring, animated } from "react-spring";
 
 import { Colors, Fonts } from "../styles";
-import { FontFamilyProperty, WidthProperty } from "csstype";
+import {
+  FontFamilyProperty,
+  WidthProperty,
+  AlignSelfProperty,
+  JustifySelfProperty
+} from "csstype";
 
 export interface InputProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   label: string;
+  style?: React.CSSProperties;
   width?: WidthProperty<string | number>;
   fontFamily?: FontFamilyProperty;
   style?: React.CSSProperties;
@@ -33,14 +39,18 @@ const Input: React.SFC<InputProps> = props => {
     borderColor: props.error ? Colors.error : Colors.subtle,
     borderRadius: "5px"
   }));
-  const Wrapper = styled.div``;
+  const Wrapper = styled.div`
+    width: ${props.width || "100%"};
+    align-self: ${props.alignSelf || "auto"};
+    justify-self: ${props.justifySelf || "auto"};
+  `;
   const Input = styled.input`
     background-color: transparent;
     position: relative;
     z-index: 1;
     border: none;
     outline: none;
-    width: ${props.width || "100%"};
+    width: 100%;
     font-size: 1.5em;
     font-family: ${props.fontFamily || Fonts.standard};
   `;
