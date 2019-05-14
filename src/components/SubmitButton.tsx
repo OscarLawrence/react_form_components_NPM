@@ -24,10 +24,13 @@ export interface SubmitButtonProps {
 
 const SubmitButton: React.SFC<SubmitButtonProps> = props => {
   const Wrapper = styled.div`
-    width: ${props.width || "10%"};
+    width: ${props.width || "15%"};
     margin: 1em auto;
     background-color: ${props.backgroundColor || "#0994CC"};
     border-radius: ${props.borderRadius || "0.3em"};
+    @media only screen and (max-width: 700px) {
+      width: ${props.width || "30%"};
+    }
   `;
   const styles = {
     cursor: "pointer",
