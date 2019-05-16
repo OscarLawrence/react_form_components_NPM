@@ -11,6 +11,8 @@ export interface InputProps {
   label: string;
   labelSubtleColor?: ColorProperty;
   labelHighlightColor?: ColorProperty;
+  borderSubtleColor?: ColorProperty;
+  borderHighlightColor?: ColorProperty;
   textColor?: ColorProperty;
   asteriskColor?: ColorProperty;
   errorColor?: ColorProperty;
@@ -35,7 +37,9 @@ const Input: React.SFC<InputProps> = props => {
   }));
   const [borderSpring, setBorderSpring] = useSpring(() => ({
     border: `1px solid`,
-    borderColor: props.error ? Colors.error : Colors.subtle,
+    borderColor: props.error
+      ? Colors.error
+      : props.borderSubtleColor || Colors.subtle,
     borderRadius: "5px"
   }));
   const Wrapper = styled.div`
@@ -75,7 +79,7 @@ const Input: React.SFC<InputProps> = props => {
       lineHeight: "1.5em"
     });
     setBorderSpring({
-      borderColor: Colors.highlight
+      borderColor: props.borderHighlightColor || Colors.highlight
     });
   };
   const handleUnFocus = e => {
@@ -88,7 +92,9 @@ const Input: React.SFC<InputProps> = props => {
       color: props.labelSubtleColor || Colors.subtle
     });
     setBorderSpring({
-      borderColor: props.error ? Colors.error : Colors.subtle
+      borderColor: props.error
+        ? Colors.error
+        : props.borderSubtleColor || Colors.subtle
     });
   };
 
