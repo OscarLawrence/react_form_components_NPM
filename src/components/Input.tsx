@@ -40,9 +40,10 @@ export interface InputProps {
 
 const Input: React.SFC<InputProps> = props => {
   const [labelSpring, setLabelSpring] = useSpring(() => ({
-    fontSize: "1.75em",
+    fontSize: "1.5em",
     color: props.labelSubtleColor || Colors.subtle,
-    transform: "translateY(1.15em)"
+    transform: "translateY(1.15em)",
+    lineHeight: "1em"
   }));
   const [borderSpring, setBorderSpring] = useSpring(() => ({
     border: `1px solid`,
@@ -64,11 +65,10 @@ const Input: React.SFC<InputProps> = props => {
     width: 100%;
     font-size: ${props.fontSize || "1.5em"};
     font-weight: ${props.fontWeight || "inherit"}
-    font-size: 1.5em;
     font-family: ${props.fontFamily || Fonts.standard};
   `;
   const Label = styled.label`
-    display: inline-block;
+    display: flex;
     font-weight: ${props.labelFontWeight || "400"};
     font-family: ${props.labelFontFamily || Fonts.standard};
   `;
@@ -84,9 +84,10 @@ const Input: React.SFC<InputProps> = props => {
   const handleFocus = e => {
     e.preventDefault();
     setLabelSpring({
-      fontSize: "1.25em",
+      fontSize: "1em",
       transform: "translateY(0em)",
-      color: props.labelHighlightColor || Colors.highlight
+      color: props.labelHighlightColor || Colors.highlight,
+      lineHeight: "1.5em"
     });
     setBorderSpring({
       borderColor: props.borderHighlightColor || Colors.highlight
@@ -95,7 +96,8 @@ const Input: React.SFC<InputProps> = props => {
   const handleUnFocus = e => {
     e.preventDefault();
     setLabelSpring({
-      fontSize: e.target.value === "" ? "1.75em" : "1.25em",
+      fontSize: e.target.value === "" ? "1.5em" : "1em",
+      lineHeight: e.target.value === "" ? "1em" : "1.5em",
       transform:
         e.target.value === "" ? "translateY(1.15em)" : "translateY(0em)",
       color: props.labelSubtleColor || Colors.subtle

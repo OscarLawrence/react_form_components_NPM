@@ -9,14 +9,22 @@ import {
   BorderRadiusProperty,
   FontWeightProperty,
   BackgroundColorProperty,
-  PaddingProperty
+  PaddingProperty,
+  FontFamilyProperty,
+  FontSizeProperty,
+  MarginProperty,
+  HeightProperty
 } from "csstype";
 
 export interface SubmitButtonProps {
-  backgroundColor?: BackgroundColorProperty;
+  backgroundcolor?: BackgroundColorProperty;
   fontWeight?: FontWeightProperty;
+  fontFamily?: FontFamilyProperty;
+  fontSize?: FontSizeProperty<string | number>;
+  margin?: MarginProperty<string>;
   color?: ColorProperty;
   width?: WidthProperty<string | number>;
+  height?: HeightProperty<string | number>;
   borderRadius?: BorderRadiusProperty<string | number>;
   padding?: PaddingProperty<string | number>;
   style?: React.CSSProperties;
@@ -24,9 +32,13 @@ export interface SubmitButtonProps {
 
 const SubmitButton: React.SFC<SubmitButtonProps> = props => {
   const Wrapper = styled.div`
-    width: ${props.width || "15%"};
-    margin: 1em auto;
-    background-color: ${props.backgroundColor || "#0994CC"};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: ${props.width || "7.5em"};
+    height: ${props.height || "auto"}
+    margin: ${props.margin || "1em auto"};
+    background-color: ${props.backgroundcolor || "#0994CC"};
     border-radius: ${props.borderRadius || "0.3em"};
     @media only screen and (max-width: 700px) {
       width: ${props.width || "30%"};
@@ -35,13 +47,15 @@ const SubmitButton: React.SFC<SubmitButtonProps> = props => {
   const styles = {
     cursor: "pointer",
     width: "100%",
+    height: "100%",
     color: props.color || "white",
     fontWeight: props.fontWeight || "bold",
     padding: props.padding || "0.3em",
     backgroundColor: "transparent",
     border: "none",
     outline: "none",
-    fontFamily: Fonts.standard
+    fontFamily: props.fontFamily || Fonts.standard,
+    fontSize: props.fontSize || "1.5em"
   };
 
   const [spring, set] = useSpring(() => ({
