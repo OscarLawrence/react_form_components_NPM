@@ -9,6 +9,7 @@ export interface TextFieldProps {
     padding?: PaddingProperty<string | number>;
     placeholder?: string;
     placeholderColor?: ColorProperty;
+    placeholderFontFamily?: FontFamilyProperty;
     textColor?: ColorProperty;
     className?: string;
     id?: string;

@@ -22,6 +22,7 @@ export interface TextFieldProps {
   padding?: PaddingProperty<string | number>;
   placeholder?: string;
   placeholderColor?: ColorProperty;
+  placeholderFontFamily?: FontFamilyProperty;
   textColor?: ColorProperty;
   className?: string;
   id?: string;
@@ -57,9 +58,11 @@ const TextField: React.SFC<TextFieldProps> = props => {
     ::placeholder,
   ::-webkit-textarea-placeholder {
     color: ${props.placeholderColor || Colors.subtle};
+    font-family: ${props.placeholderFontFamily || Fonts.standard}
   }
   :-ms-textarea-placeholder {
      color: ${props.placeholderColor || Colors.subtle};
+     font-family: ${props.placeholderFontFamily || Fonts.standard}
   }
   `;
   return (

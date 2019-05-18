@@ -11,6 +11,7 @@ export interface InputProps {
   label: string;
   labelSubtleColor?: ColorProperty;
   labelHighlightColor?: ColorProperty;
+  labelFontFamily?: FontFamilyProperty;
   borderSubtleColor?: ColorProperty;
   borderHighlightColor?: ColorProperty;
   textColor?: ColorProperty;
@@ -59,7 +60,7 @@ const Input: React.SFC<InputProps> = props => {
   const Label = styled.label`
     display: flex;
     font-weight: 400;
-    font-family: ${props.fontFamily || Fonts.standard};
+    font-family: ${props.labelFontFamily || Fonts.standard};
   `;
   const Asterisk = styled.div`
     color: ${props.asteriskColor || "black"};

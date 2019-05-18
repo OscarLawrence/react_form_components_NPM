@@ -5,6 +5,9 @@ export interface InputProps {
     label: string;
     labelSubtleColor?: ColorProperty;
     labelHighlightColor?: ColorProperty;
+    labelFontFamily?: FontFamilyProperty;
+    borderSubtleColor?: ColorProperty;
+    borderHighlightColor?: ColorProperty;
     textColor?: ColorProperty;
     asteriskColor?: ColorProperty;
     errorColor?: ColorProperty;
