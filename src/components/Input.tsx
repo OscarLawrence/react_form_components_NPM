@@ -4,7 +4,13 @@ import styled from "styled-components";
 import { useSpring, animated } from "react-spring";
 
 import { Colors, Fonts } from "../styles";
-import { FontFamilyProperty, WidthProperty, ColorProperty } from "csstype";
+import {
+  FontFamilyProperty,
+  WidthProperty,
+  ColorProperty,
+  FontSizeProperty,
+  FontWeightProperty
+} from "csstype";
 
 export interface InputProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -12,6 +18,9 @@ export interface InputProps {
   labelSubtleColor?: ColorProperty;
   labelHighlightColor?: ColorProperty;
   labelFontFamily?: FontFamilyProperty;
+  labelFontSize?: FontSizeProperty<string>;
+  labelHighlightFontSize?: FontSizeProperty<string>;
+  labelFontWeight?: FontWeightProperty;
   borderSubtleColor?: ColorProperty;
   borderHighlightColor?: ColorProperty;
   textColor?: ColorProperty;
@@ -19,6 +28,8 @@ export interface InputProps {
   errorColor?: ColorProperty;
   width?: WidthProperty<string | number>;
   fontFamily?: FontFamilyProperty;
+  fontSize?: FontSizeProperty<string | number>;
+  fontWeight?: FontWeightProperty;
   style?: React.CSSProperties;
   name?: string;
   id?: string;
@@ -30,8 +41,21 @@ export interface InputProps {
 }
 
 const Input: React.SFC<InputProps> = props => {
+  const _getLabelLineHeight = () => {
+    if (props.labelFontSize || props.labelHighlightFontSize) {
+      return (
+        String(
+          Number(props.labelFontSize.replace("em", "")) ||
+            1.5 / Number(props.labelHighlightFontSize.replace("em", "")) ||
+            1
+        ) + "em"
+      );
+    } else {
+      return "1.5em";
+    }
+  };
   const [labelSpring, setLabelSpring] = useSpring(() => ({
-    fontSize: "1.5em",
+    fontSize: props.labelFontSize || "1.5em",
     color: props.labelSubtleColor || Colors.subtle,
     transform: "translateY(1.15em)",
     lineHeight: "1em"
@@ -54,12 +78,14 @@ const Input: React.SFC<InputProps> = props => {
     border: none;
     outline: none;
     width: 100%;
-    font-size: 1.5em;
+    font-size: ${props.fontSize || "1.5em"};
+    font-weight: ${props.fontWeight || "inherit"}
     font-family: ${props.fontFamily || Fonts.standard};
   `;
   const Label = styled.label`
     display: flex;
     font-weight: 400;
+    font-size: ${props.labelFontSize || "1.5em"}
     font-family: ${props.labelFontFamily || Fonts.standard};
   `;
   const Asterisk = styled.div`
@@ -74,10 +100,10 @@ const Input: React.SFC<InputProps> = props => {
   const handleFocus = e => {
     e.preventDefault();
     setLabelSpring({
-      fontSize: "1em",
+      fontSize: props.labelHighlightFontSize || "1em",
       transform: "translateY(0em)",
       color: props.labelHighlightColor || Colors.highlight,
-      lineHeight: "1.5em"
+      lineHeight: _getLabelLineHeight()
     });
     setBorderSpring({
       borderColor: props.borderHighlightColor || Colors.highlight

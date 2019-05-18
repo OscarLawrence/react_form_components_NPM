@@ -10,12 +10,16 @@ import {
   BorderColorProperty,
   BorderStyleProperty,
   BorderWidthProperty,
-  ColorProperty
+  ColorProperty,
+  FontSizeProperty,
+  FontWeightProperty
 } from "csstype";
 
 export interface TextFieldProps {
   name?: string;
   fontFamily?: FontFamilyProperty;
+  fontSize?: FontSizeProperty<string | number>;
+  fontWeight?: FontWeightProperty;
   onChange: (e: React.ChangeEvent) => void;
   height?: HeightProperty<string | number>;
   width?: WidthProperty<string | number>;
@@ -23,6 +27,8 @@ export interface TextFieldProps {
   placeholder?: string;
   placeholderColor?: ColorProperty;
   placeholderFontFamily?: FontFamilyProperty;
+  placeholderFontSize?: FontSizeProperty<string | number>;
+  placeholderFontWeight?: FontWeightProperty;
   textColor?: ColorProperty;
   className?: string;
   id?: string;
@@ -43,10 +49,13 @@ const TextField: React.SFC<TextFieldProps> = props => {
     margin: 0 auto;
     height: ${props.height || "100%"}
     width: ${props.width || "100%"};
-    font-family: ${props.fontFamily || Fonts.standard};
+    
     box-sizing: border-box;
   `;
   const Textarea = styled.textarea`
+  font-family: ${props.fontFamily || Fonts.standard};
+  font-size: ${props.fontSize || "inherit"};
+  font-weight: ${props.fontWeight || "inherit"};
     background-color: transparent;
     color: ${props.textColor || "black"}
     width: 100%;
@@ -59,10 +68,14 @@ const TextField: React.SFC<TextFieldProps> = props => {
   ::-webkit-textarea-placeholder {
     color: ${props.placeholderColor || Colors.subtle};
     font-family: ${props.placeholderFontFamily || Fonts.standard}
+    font-size: ${props.placeholderFontSize || "inherit"};
+    font-weight: ${props.placeholderFontWeight || "inherit"};
   }
   :-ms-textarea-placeholder {
-     color: ${props.placeholderColor || Colors.subtle};
-     font-family: ${props.placeholderFontFamily || Fonts.standard}
+    color: ${props.placeholderColor || Colors.subtle};
+    font-family: ${props.placeholderFontFamily || Fonts.standard}
+    font-size: ${props.placeholderFontSize || "inherit"};
+    font-weight: ${props.placeholderFontWeight || "inherit"};
   }
   `;
   return (
