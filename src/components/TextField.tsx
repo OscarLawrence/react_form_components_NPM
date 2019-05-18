@@ -54,8 +54,8 @@ const TextField: React.SFC<TextFieldProps> = props => {
   `;
   const Textarea = styled.textarea`
   font-family: ${props.fontFamily || Fonts.standard};
-  font-size: ${props.fontSize || "inherit"};
-  font-weight: ${props.fontWeight || "inherit"};
+  font-size: ${props.fontSize || "1.5em"};
+  font-weight: ${props.fontWeight || "normal"};
     background-color: transparent;
     color: ${props.textColor || "black"}
     width: 100%;
@@ -68,14 +68,19 @@ const TextField: React.SFC<TextFieldProps> = props => {
   ::-webkit-textarea-placeholder {
     color: ${props.placeholderColor || Colors.subtle};
     font-family: ${props.placeholderFontFamily || Fonts.standard}
-    font-size: ${props.placeholderFontSize || "inherit"};
-    font-weight: ${props.placeholderFontWeight || "inherit"};
   }
   :-ms-textarea-placeholder {
     color: ${props.placeholderColor || Colors.subtle};
     font-family: ${props.placeholderFontFamily || Fonts.standard}
-    font-size: ${props.placeholderFontSize || "inherit"};
-    font-weight: ${props.placeholderFontWeight || "inherit"};
+  }
+  :placeholder-shown,
+  ::-webkit-textarea-placeholder-shown {
+    font-size: ${props.placeholderFontSize || "1.5em"};
+    font-weight: ${props.placeholderFontWeight || "normal"}
+  }
+  :-ms-textarea-placeholder-shown {
+    font-size: ${props.placeholderFontSize || "1.5em"};
+    font-weight: ${props.placeholderFontWeight || "normal"}
   }
   `;
   return (

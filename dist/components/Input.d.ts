@@ -6,8 +6,6 @@ export interface InputProps {
     labelSubtleColor?: ColorProperty;
     labelHighlightColor?: ColorProperty;
     labelFontFamily?: FontFamilyProperty;
-    labelFontSize?: FontSizeProperty<string>;
-    labelHighlightFontSize?: FontSizeProperty<string>;
     labelFontWeight?: FontWeightProperty;
     borderSubtleColor?: ColorProperty;
     borderHighlightColor?: ColorProperty;
