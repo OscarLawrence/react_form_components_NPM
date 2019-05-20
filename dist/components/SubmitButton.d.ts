@@ -1,6 +1,8 @@
 import * as React from "react";
 import { ColorProperty, WidthProperty, BorderRadiusProperty, FontWeightProperty, BackgroundColorProperty, PaddingProperty, FontFamilyProperty, FontSizeProperty, MarginProperty, HeightProperty } from "csstype";
 export interface SubmitButtonProps {
+    onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    disabled?: boolean;
     backgroundcolor?: BackgroundColorProperty;
     fontWeight?: FontWeightProperty;
     fontFamily?: FontFamilyProperty;

@@ -17,6 +17,8 @@ import {
 } from "csstype";
 
 export interface SubmitButtonProps {
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  disabled?: boolean;
   backgroundcolor?: BackgroundColorProperty;
   fontWeight?: FontWeightProperty;
   fontFamily?: FontFamilyProperty;
@@ -71,6 +73,7 @@ const SubmitButton: React.SFC<SubmitButtonProps> = props => {
   return (
     <Wrapper onMouseDown={onMouseDown} onMouseUp={onMouseUp}>
       <animated.button
+        disabled={props.disabled || false}
         {...props}
         aria-label="submit"
         style={{ ...styles, ...spring }}
