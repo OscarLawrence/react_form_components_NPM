@@ -23,6 +23,17 @@ const App: React.SFC<AppProps> = () => {
     flex-direction: row;
     justify-content: space-between;
   `;
+  const validate = (value: string) => {
+    let error = [];
+    if (value.length < 5) {
+      error.push("length");
+    }
+    if (/.*[A-Z]/.test(value)) {
+      error.push("uppercase");
+    }
+    console.log(error);
+    return error.length === 0 ? true : error;
+  };
   return (
     <Wrapper>
       <Form>
@@ -30,18 +41,12 @@ const App: React.SFC<AppProps> = () => {
           <Input
             label="Test"
             width="40%"
-            onChange={onChange}
-            error={true}
             required
-            errorText="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nemo, dolorem. Odio laudantium molestias qui, error optio in, vel ea adipisci repellat harum debitis? Rerum laudantium ipsum doloremque soluta, quaerat molestiae non labore sequi nobis odio illo neque maiores voluptas ex mollitia voluptatem deleniti, repudiandae vero reprehenderit debitis autem. Commodi, mollitia?"
-          />
-          <Input
-            label="Test"
-            width="40%"
-            onChange={onChange}
-            error={true}
-            required
-            errorText="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nemo, dolorem. Odio laudantium molestias qui, error optio in, vel ea adipisci repellat harum debitis? Rerum laudantium ipsum doloremque soluta, quaerat molestiae non labore sequi nobis odio illo neque maiores voluptas ex mollitia voluptatem deleniti, repudiandae vero reprehenderit debitis autem. Commodi, mollitia?"
+            validationFunction={validate}
+            errorText={{
+              length: "the Input must have at least 5 characters",
+              uppercase: "need to include uppercase"
+            }}
           />
         </InputWrapper>
         <Select

@@ -12,8 +12,13 @@ import {
   FontWeightProperty
 } from "csstype";
 
+interface errorObject {
+  [key: string]: string;
+}
+
 export interface InputProps {
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  validationFunction?: (value: string) => string[] | true;
   label: string;
   labelSubtleColor?: ColorProperty;
   labelHighlightColor?: ColorProperty;
@@ -33,12 +38,36 @@ export interface InputProps {
   id?: string;
   className?: string;
   error?: boolean;
-  errorText?: string;
+  errorText?: errorObject;
   required?: boolean;
   type?: string;
 }
 
 const Input: React.SFC<InputProps> = props => {
+  const [State, setState] = React.useState("");
+  const [Errors, setErrors] = React.useState({});
+  const [error, setError] = React.useState(false);
+  React.useEffect(() => {
+    if (props.errorText) {
+      let errObject = {};
+      for (let error in props.errorText) {
+        errObject[error] = false;
+      }
+      setErrors(errObject);
+    }
+  }, []);
+  React.useEffect(() => {
+    setLabelSpring({
+      color: error
+        ? Colors.error
+        : props.labelHighlightColor || Colors.highlight
+    });
+    setBorderSpring({
+      borderColor: error
+        ? Colors.error
+        : props.borderHighlightColor || Colors.highlight
+    });
+  }, [error]);
   const [labelSpring, setLabelSpring] = useSpring(() => ({
     fontSize: "1.5em",
     color: props.labelSubtleColor || Colors.subtle,
@@ -47,26 +76,26 @@ const Input: React.SFC<InputProps> = props => {
   }));
   const [borderSpring, setBorderSpring] = useSpring(() => ({
     border: `1px solid`,
-    borderColor: props.error
+    borderColor: error
       ? Colors.error
       : props.borderSubtleColor || Colors.subtle,
     borderRadius: "5px"
   }));
-  const Wrapper = styled.div`
-    width: ${props.width || "100%"};
-  `;
-  const Input = styled.input`
-    background-color: transparent;
-    color: ${props.textColor || "black"};
-    position: relative;
-    z-index: 1;
-    border: none;
-    outline: none;
-    width: 100%;
-    font-size: ${props.fontSize || "1.5em"};
-    font-weight: ${props.fontWeight || "inherit"}
-    font-family: ${props.fontFamily || Fonts.standard};
-  `;
+  const wrapperStyles = {
+    width: props.width || "100%"
+  };
+  const InputStyle = {
+    backgroundColor: "transparent",
+    color: props.textColor || "black",
+    position: "relative" as "relative",
+    zIndex: 1,
+    border: "none",
+    outline: "none",
+    width: "100%",
+    fontSize: props.fontSize || "1.5em",
+    fontWeight: props.fontWeight || "inherit",
+    fontFamily: props.fontFamily || Fonts.standard
+  };
   const Label = styled.label`
     display: flex;
     font-weight: ${props.labelFontWeight || "400"};
@@ -103,29 +132,68 @@ const Input: React.SFC<InputProps> = props => {
       color: props.labelSubtleColor || Colors.subtle
     });
     setBorderSpring({
-      borderColor: props.error
+      borderColor: error
         ? Colors.error
         : props.borderSubtleColor || Colors.subtle
     });
   };
 
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    setState(e.target.value);
+    if (props.validationFunction) {
+      const validation = props.validationFunction(e.target.value);
+      console.log(validation);
+      if (validation !== true) {
+        for (let error of validation) {
+          setErrors(
+            Object.defineProperty(Errors, error, {
+              enumerable: true,
+              writable: false,
+              configurable: true,
+              value: true
+            })
+          );
+        }
+        if (!error) {
+          setError(true);
+        }
+      } else {
+        setError(false);
+      }
+    }
+  };
+  const getErrors = () => {
+    let errors = [];
+    for (let error in Errors) {
+      if (Errors[error]) {
+        errors.push(props.errorText[error]);
+      }
+    }
+    return errors.map((item, key) => {
+      return <Error key={key}>{item}</Error>;
+    });
+  };
+  console.log(Errors, Date.now());
   return (
-    <Wrapper>
+    <div style={wrapperStyles}>
       <animated.div style={{ ...labelSpring, zIndex: -1 }}>
         <Label>
           {props.label}
           {props.required ? <Asterisk>*</Asterisk> : null}
         </Label>
       </animated.div>
-      <Input
-        {...props}
+      <input
+        style={InputStyle}
         onFocus={handleFocus}
         aria-label={props.type || "text"}
         onBlur={handleUnFocus}
+        value={State}
+        onChange={onChange}
       />
       <animated.div style={borderSpring} />
-      {props.error ? <Error>{props.errorText}</Error> : null}
-    </Wrapper>
+      {error ? getErrors() : null}
+    </div>
   );
 };
 
