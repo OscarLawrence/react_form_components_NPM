@@ -48,6 +48,9 @@ const Input: React.SFC<InputProps> = props => {
   const [Errors, setErrors] = React.useState({});
   const [error, setError] = React.useState(false);
   React.useEffect(() => {
+    initializeErrors();
+  }, []);
+  const initializeErrors = () => {
     if (props.errorText) {
       let errObject = {};
       for (let error in props.errorText) {
@@ -55,7 +58,7 @@ const Input: React.SFC<InputProps> = props => {
       }
       setErrors(errObject);
     }
-  }, []);
+  };
   React.useEffect(() => {
     setLabelSpring({
       color: error
@@ -136,6 +139,9 @@ const Input: React.SFC<InputProps> = props => {
         ? Colors.error
         : props.borderSubtleColor || Colors.subtle
     });
+    if (props.onChange) {
+      props.onChange(e);
+    }
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -145,16 +151,31 @@ const Input: React.SFC<InputProps> = props => {
       const validation = props.validationFunction(e.target.value);
       console.log(validation);
       if (validation !== true) {
-        for (let error of validation) {
-          setErrors(
-            Object.defineProperty(Errors, error, {
-              enumerable: true,
-              writable: false,
-              configurable: true,
-              value: true
-            })
-          );
+        console.log(Errors);
+        for (let error in Errors) {
+          if (error in validation) {
+            console.log(error, validation);
+            setErrors(
+              Object.defineProperty(Errors, error, {
+                enumerable: true,
+                writable: false,
+                configurable: true,
+                value: true
+              })
+            );
+          } else {
+            console.log(error, validation);
+            setErrors(
+              Object.defineProperty(Errors, error, {
+                enumerable: true,
+                writable: false,
+                configurable: true,
+                value: false
+              })
+            );
+          }
         }
+
         if (!error) {
           setError(true);
         }
