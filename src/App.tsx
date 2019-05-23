@@ -45,14 +45,9 @@ const App: React.SFC<AppProps> = () => {
         <InputWrapper>
           <Input
             label="Test"
-            width="40%"
             required
+            errors={{ length: "too short", uppercase: "no Uppercase!!!" }}
             validationFunction={validate}
-            onChange={onChange}
-            errorText={{
-              length: "the Input must have at least 5 characters",
-              uppercase: "need to include uppercase"
-            }}
           />
         </InputWrapper>
         <Select

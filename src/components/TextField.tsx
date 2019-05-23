@@ -15,12 +15,16 @@ import {
   FontWeightProperty
 } from "csstype";
 
+interface errorObject {
+  [key: string]: string;
+}
+
 export interface TextFieldProps {
   name?: string;
   fontFamily?: FontFamilyProperty;
   fontSize?: FontSizeProperty<string | number>;
   fontWeight?: FontWeightProperty;
-  onChange: (e: React.ChangeEvent) => void;
+  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   height?: HeightProperty<string | number>;
   width?: WidthProperty<string | number>;
   padding?: PaddingProperty<string | number>;
@@ -30,6 +34,7 @@ export interface TextFieldProps {
   placeholderFontSize?: FontSizeProperty<string | number>;
   placeholderFontWeight?: FontWeightProperty;
   textColor?: ColorProperty;
+  errorColor?: ColorProperty;
   className?: string;
   id?: string;
   borderRadius?: BorderRadiusProperty<string | number>;
@@ -39,25 +44,43 @@ export interface TextFieldProps {
   style?: React.CSSProperties;
 }
 
-const TextField: React.SFC<TextFieldProps> = props => {
-  const Wrapper = styled.div`
-    border-color: ${props.borderColor || Colors.subtle};
-    border-radius: ${props.borderRadius || "3px"};
-    border-width: ${props.borderWidth || "1.5px"};
-    border-style: ${props.borderStyle || "solid"};
-    padding: ${props.padding || "1em"};
-    margin: 0 auto;
-    height: ${props.height || "100%"}
-    width: ${props.width || "100%"};
-    
-    box-sizing: border-box;
-  `;
-  const Textarea = styled.textarea`
-  font-family: ${props.fontFamily || Fonts.standard};
-  font-size: ${props.fontSize || "1.5em"};
-  font-weight: ${props.fontWeight || "normal"};
+export interface TextFieldProps {
+  name?: string;
+  fontFamily?: FontFamilyProperty;
+  fontSize?: FontSizeProperty<string | number>;
+  fontWeight?: FontWeightProperty;
+  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  height?: HeightProperty<string | number>;
+  width?: WidthProperty<string | number>;
+  padding?: PaddingProperty<string | number>;
+  placeholder?: string;
+  placeholderColor?: ColorProperty;
+  placeholderFontFamily?: FontFamilyProperty;
+  placeholderFontSize?: FontSizeProperty<string | number>;
+  placeholderFontWeight?: FontWeightProperty;
+  textColor?: ColorProperty;
+  errorColor?: ColorProperty;
+  className?: string;
+  id?: string;
+  borderRadius?: BorderRadiusProperty<string | number>;
+  borderColor?: BorderColorProperty;
+  borderStyle?: BorderStyleProperty;
+  borderWidth?: BorderWidthProperty<string | number>;
+  style?: React.CSSProperties;
+}
+
+export interface TextFieldState {}
+
+class TextField extends React.Component<TextFieldProps, TextFieldState> {
+  state = {
+    value: ""
+  };
+  Textarea = styled.textarea`
+    font-family: ${this.props.fontFamily || Fonts.standard};
+    font-size: ${this.props.fontSize || "1.5em"};
+    font-weight: ${this.props.fontWeight || "normal"};
     background-color: transparent;
-    color: ${props.textColor || "black"}
+    color: ${this.props.textColor || "black"};
     width: 100%;
     height: 100%;
     outline: none;
@@ -65,34 +88,65 @@ const TextField: React.SFC<TextFieldProps> = props => {
     resize: none;
     border: none;
     ::placeholder,
-  ::-webkit-textarea-placeholder {
-    color: ${props.placeholderColor || Colors.subtle};
-    font-family: ${props.placeholderFontFamily || Fonts.standard}
-  }
-  :-ms-textarea-placeholder {
-    color: ${props.placeholderColor || Colors.subtle};
-    font-family: ${props.placeholderFontFamily || Fonts.standard}
-  }
-  :placeholder-shown,
-  ::-webkit-textarea-placeholder-shown {
-    font-size: ${props.placeholderFontSize || "1.5em"};
-    font-weight: ${props.placeholderFontWeight || "normal"}
-  }
-  :-ms-textarea-placeholder-shown {
-    font-size: ${props.placeholderFontSize || "1.5em"};
-    font-weight: ${props.placeholderFontWeight || "normal"}
-  }
+    ::-webkit-textarea-placeholder {
+      color: ${this.props.placeholderColor || Colors.subtle};
+      font-family: ${props =>
+        this.props.placeholderFontFamily || Fonts.standard};
+    }
+    :-ms-textarea-placeholder {
+      color: ${this.props.placeholderColor || Colors.subtle};
+      font-family: ${props =>
+        this.props.placeholderFontFamily || Fonts.standard};
+    }
+    :placeholder-shown,
+    ::-webkit-textarea-placeholder-shown {
+      font-size: ${this.props.placeholderFontSize || "1.5em"};
+      font-weight: ${this.props.placeholderFontWeight || "normal"};
+    }
+    :-ms-textarea-placeholder-shown {
+      font-size: ${this.props.placeholderFontSize || "1.5em"};
+      font-weight: ${this.props.placeholderFontWeight || "normal"};
+    }
   `;
-  return (
-    <Wrapper>
-      <label htmlFor={props.name || "textarea"} />
-      <Textarea
-        onChange={props.onChange}
-        aria-label={props.name || "textarea"}
-        {...props}
-      />
-    </Wrapper>
-  );
-};
+  componentWillMount() {
+    if (localStorage["ContactText"]) {
+      this.setState({ value: localStorage["ContactText"] });
+    }
+  }
+
+  // styles
+  WrapperStyles = {
+    borderColor: this.props.borderColor || Colors.subtle,
+    borderRadius: this.props.borderRadius || "3px",
+    borderWidth: this.props.borderWidth || "1.5px",
+    borderStyle: this.props.borderStyle || "solid",
+    padding: this.props.padding || "1em",
+    margin: "0 auto",
+    height: this.props.height || "100%",
+    width: this.props.width || "100%",
+    boxSizing: "border-box" as "border-box"
+  };
+
+  onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    this.setState({ value: e.target.value });
+    this.props.onChange && this.props.onChange(e);
+    localStorage["ContactText"] = e.target.value;
+  };
+
+  render() {
+    return (
+      <div style={this.WrapperStyles}>
+        <label htmlFor={this.props.name || "textarea"} />
+        <this.Textarea
+          id="test"
+          onChange={this.onChange}
+          aria-label={this.props.name || "textarea"}
+          value={this.state.value}
+          {...this.props}
+        />
+      </div>
+    );
+  }
+}
 
 export default TextField;

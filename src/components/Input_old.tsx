@@ -12,6 +12,8 @@ import {
   FontWeightProperty
 } from "csstype";
 
+import { createStyled } from "../lib/helpers";
+
 interface errorObject {
   [key: string]: string;
 }
@@ -37,28 +39,31 @@ export interface InputProps {
   name?: string;
   id?: string;
   className?: string;
-  error?: boolean;
-  errorText?: errorObject;
+  errors?: errorObject;
   required?: boolean;
   type?: string;
 }
 
 const Input: React.SFC<InputProps> = props => {
-  const [State, setState] = React.useState("");
+  // state
   const [Errors, setErrors] = React.useState({});
   const [error, setError] = React.useState(false);
+
+  // initialize errors
   React.useEffect(() => {
     initializeErrors();
   }, []);
   const initializeErrors = () => {
-    if (props.errorText) {
+    if (props.errors) {
       let errObject = {};
-      for (let error in props.errorText) {
+      for (let error in props.errors) {
         errObject[error] = false;
       }
       setErrors(errObject);
     }
   };
+
+  // handle errorColors
   React.useEffect(() => {
     setLabelSpring({
       color: error
@@ -71,6 +76,8 @@ const Input: React.SFC<InputProps> = props => {
         : props.borderHighlightColor || Colors.highlight
     });
   }, [error]);
+
+  // animations
   const [labelSpring, setLabelSpring] = useSpring(() => ({
     fontSize: "1.5em",
     color: props.labelSubtleColor || Colors.subtle,
@@ -84,6 +91,8 @@ const Input: React.SFC<InputProps> = props => {
       : props.borderSubtleColor || Colors.subtle,
     borderRadius: "5px"
   }));
+
+  // styles
   const wrapperStyles = {
     width: props.width || "100%"
   };
@@ -99,11 +108,14 @@ const Input: React.SFC<InputProps> = props => {
     fontWeight: props.fontWeight || "inherit",
     fontFamily: props.fontFamily || Fonts.standard
   };
-  const Label = styled.label`
-    display: flex;
-    font-weight: ${props.labelFontWeight || "400"};
-    font-family: ${props.labelFontFamily || Fonts.standard};
-  `;
+  const Label = createStyled(
+    "label",
+    `
+  display: flex;
+  font-weight: ${props.labelFontWeight || "400"};
+  font-family: ${props.labelFontFamily || Fonts.standard};
+`
+  );
   const Asterisk = styled.div`
     color: ${props.asteriskColor || "black"};
     transform: translateX(0.2em);
@@ -139,22 +151,15 @@ const Input: React.SFC<InputProps> = props => {
         ? Colors.error
         : props.borderSubtleColor || Colors.subtle
     });
-    if (props.onChange) {
-      props.onChange(e);
-    }
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    setState(e.target.value);
     if (props.validationFunction) {
       const validation = props.validationFunction(e.target.value);
-      console.log(validation);
       if (validation !== true) {
-        console.log(Errors);
         for (let error in Errors) {
-          if (error in validation) {
-            console.log(error, validation);
+          if (validation.includes(error)) {
             setErrors(
               Object.defineProperty(Errors, error, {
                 enumerable: true,
@@ -164,7 +169,6 @@ const Input: React.SFC<InputProps> = props => {
               })
             );
           } else {
-            console.log(error, validation);
             setErrors(
               Object.defineProperty(Errors, error, {
                 enumerable: true,
@@ -175,27 +179,25 @@ const Input: React.SFC<InputProps> = props => {
             );
           }
         }
-
-        if (!error) {
-          setError(true);
-        }
+        setError(true);
       } else {
         setError(false);
       }
     }
+    props.onChange && props.onChange(e);
   };
   const getErrors = () => {
     let errors = [];
     for (let error in Errors) {
       if (Errors[error]) {
-        errors.push(props.errorText[error]);
+        errors.push(props.errors[error]);
       }
     }
+    console.log(errors);
     return errors.map((item, key) => {
       return <Error key={key}>{item}</Error>;
     });
   };
-  console.log(Errors, Date.now());
   return (
     <div style={wrapperStyles}>
       <animated.div style={{ ...labelSpring, zIndex: -1 }}>
@@ -209,7 +211,6 @@ const Input: React.SFC<InputProps> = props => {
         onFocus={handleFocus}
         aria-label={props.type || "text"}
         onBlur={handleUnFocus}
-        value={State}
         onChange={onChange}
       />
       <animated.div style={borderSpring} />
