@@ -39,8 +39,8 @@ const App: React.SFC<AppProps> = () => {
     }
     return error.length === 0 ? true : error;
   };
-  const change = value => {
-    console.log(value);
+  const change = e => {
+    console.log(e.target.value);
   };
   return (
     <Wrapper>

@@ -24,31 +24,8 @@ export interface TextFieldProps {
     borderWidth?: BorderWidthProperty<string | number>;
     style?: React.CSSProperties;
 }
-export interface TextFieldProps {
-    name?: string;
-    fontFamily?: FontFamilyProperty;
-    fontSize?: FontSizeProperty<string | number>;
-    fontWeight?: FontWeightProperty;
-    onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-    height?: HeightProperty<string | number>;
-    width?: WidthProperty<string | number>;
-    padding?: PaddingProperty<string | number>;
-    placeholder?: string;
-    placeholderColor?: ColorProperty;
-    placeholderFontFamily?: FontFamilyProperty;
-    placeholderFontSize?: FontSizeProperty<string | number>;
-    placeholderFontWeight?: FontWeightProperty;
-    textColor?: ColorProperty;
-    errorColor?: ColorProperty;
-    className?: string;
-    id?: string;
-    borderRadius?: BorderRadiusProperty<string | number>;
-    borderColor?: BorderColorProperty;
-    borderStyle?: BorderStyleProperty;
-    borderWidth?: BorderWidthProperty<string | number>;
-    style?: React.CSSProperties;
-}
 export interface TextFieldState {
+    value: string;
 }
 declare class TextField extends React.Component<TextFieldProps, TextFieldState> {
     state: {
@@ -67,7 +44,7 @@ declare class TextField extends React.Component<TextFieldProps, TextFieldState> 
         width: React.ReactText;
         boxSizing: "border-box";
     };
-    onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+    Change: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
     render(): JSX.Element;
 }
 export default TextField;

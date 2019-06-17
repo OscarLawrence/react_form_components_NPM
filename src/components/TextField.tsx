@@ -24,7 +24,7 @@ export interface TextFieldProps {
   fontFamily?: FontFamilyProperty;
   fontSize?: FontSizeProperty<string | number>;
   fontWeight?: FontWeightProperty;
-  onChange?: (value: string) => void;
+  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   height?: HeightProperty<string | number>;
   width?: WidthProperty<string | number>;
   padding?: PaddingProperty<string | number>;
@@ -107,7 +107,7 @@ class TextField extends React.Component<TextFieldProps, TextFieldState> {
   Change = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     this.setState({ value: e.target.value });
     localStorage["ContactText"] = e.target.value;
-    this.props.onChange && this.props.onChange(e.target.value);
+    this.props.onChange && this.props.onChange(e);
   };
 
   render() {
@@ -118,7 +118,7 @@ class TextField extends React.Component<TextFieldProps, TextFieldState> {
           onChange={this.Change}
           aria-label={this.props.name || "textarea"}
           value={this.state.value}
-          {...this.props}
+          placeholder={this.props.placeholder}
         />
       </div>
     );
