@@ -122,7 +122,7 @@ const Input: React.SFC<InputProps> = props => {
       <animated.div style={{ ...labelSpring, zIndex: -1 }}>
         <StyledLabel
           for="InputElement"
-          label="Input"
+          label={props.label}
           className="Input"
           asteriskColor={props.asteriskColor}
           required={props.required}

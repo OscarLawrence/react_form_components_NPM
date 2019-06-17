@@ -39,6 +39,9 @@ const App: React.SFC<AppProps> = () => {
     }
     return error.length === 0 ? true : error;
   };
+  const change = value => {
+    console.log(value);
+  };
   return (
     <Wrapper>
       <Form>
@@ -55,7 +58,7 @@ const App: React.SFC<AppProps> = () => {
           options={{ Test: "Test", Test1: "Test1" }}
           onChange={onSelectChange}
         />
-        <TextField placeholder="your text" height="20em" />
+        <TextField placeholder="your text" height="20em" onChange={change} />
         <SubmitButton>Submit</SubmitButton>
       </Form>
     </Wrapper>

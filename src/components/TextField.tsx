@@ -24,7 +24,7 @@ export interface TextFieldProps {
   fontFamily?: FontFamilyProperty;
   fontSize?: FontSizeProperty<string | number>;
   fontWeight?: FontWeightProperty;
-  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onChange?: (value: string) => void;
   height?: HeightProperty<string | number>;
   width?: WidthProperty<string | number>;
   padding?: PaddingProperty<string | number>;
@@ -44,32 +44,9 @@ export interface TextFieldProps {
   style?: React.CSSProperties;
 }
 
-export interface TextFieldProps {
-  name?: string;
-  fontFamily?: FontFamilyProperty;
-  fontSize?: FontSizeProperty<string | number>;
-  fontWeight?: FontWeightProperty;
-  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  height?: HeightProperty<string | number>;
-  width?: WidthProperty<string | number>;
-  padding?: PaddingProperty<string | number>;
-  placeholder?: string;
-  placeholderColor?: ColorProperty;
-  placeholderFontFamily?: FontFamilyProperty;
-  placeholderFontSize?: FontSizeProperty<string | number>;
-  placeholderFontWeight?: FontWeightProperty;
-  textColor?: ColorProperty;
-  errorColor?: ColorProperty;
-  className?: string;
-  id?: string;
-  borderRadius?: BorderRadiusProperty<string | number>;
-  borderColor?: BorderColorProperty;
-  borderStyle?: BorderStyleProperty;
-  borderWidth?: BorderWidthProperty<string | number>;
-  style?: React.CSSProperties;
+export interface TextFieldState {
+  value: string;
 }
-
-export interface TextFieldState {}
 
 class TextField extends React.Component<TextFieldProps, TextFieldState> {
   state = {
@@ -127,10 +104,10 @@ class TextField extends React.Component<TextFieldProps, TextFieldState> {
     boxSizing: "border-box" as "border-box"
   };
 
-  onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  Change = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     this.setState({ value: e.target.value });
-    this.props.onChange && this.props.onChange(e);
     localStorage["ContactText"] = e.target.value;
+    this.props.onChange && this.props.onChange(e.target.value);
   };
 
   render() {
@@ -138,8 +115,7 @@ class TextField extends React.Component<TextFieldProps, TextFieldState> {
       <div style={this.WrapperStyles}>
         <label htmlFor={this.props.name || "textarea"} />
         <this.Textarea
-          id="test"
-          onChange={this.onChange}
+          onChange={this.Change}
           aria-label={this.props.name || "textarea"}
           value={this.state.value}
           {...this.props}
