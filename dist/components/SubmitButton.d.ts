@@ -3,6 +3,7 @@ import { ColorProperty, WidthProperty, BorderRadiusProperty, FontWeightProperty,
 export interface SubmitButtonProps {
     onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
     disabled?: boolean;
+    disabledColor?: ColorProperty;
     backgroundcolor?: BackgroundColorProperty;
     fontWeight?: FontWeightProperty;
     fontFamily?: FontFamilyProperty;

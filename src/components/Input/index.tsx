@@ -15,7 +15,7 @@ import {
 import StyledLabel from "./Label";
 import StyledInput from "./Input";
 
-interface errorObject {
+export interface errorObject {
   [key: string]: string;
 }
 
@@ -115,6 +115,7 @@ const Input: React.SFC<InputProps> = props => {
         error && setError(false);
       }
     }
+    props.onChange && props.onChange(e);
   };
 
   return (
@@ -140,6 +141,7 @@ const Input: React.SFC<InputProps> = props => {
         fontFamily={props.fontFamily}
         onBlur={handleUnFocus}
         onChange={onChange}
+        name={props.name}
       />
       <animated.div style={borderSpring} />
       {error &&

@@ -20,6 +20,7 @@ export interface InputProps {
   fontSize: FontSizeProperty<string | number> | undefined;
   fontWeight?: FontWeightProperty | undefined;
   fontFamily?: FontFamilyProperty | undefined;
+  name: string;
 }
 
 const Input: React.SFC<InputProps> = props => {
@@ -30,6 +31,7 @@ const Input: React.SFC<InputProps> = props => {
       aria-label={props.type || "text"}
       onBlur={props.onBlur}
       onChange={props.onChange}
+      name={props.name}
     />
   );
 };

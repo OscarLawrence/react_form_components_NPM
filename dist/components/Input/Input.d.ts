@@ -10,6 +10,7 @@ export interface InputProps {
     fontSize: FontSizeProperty<string | number> | undefined;
     fontWeight?: FontWeightProperty | undefined;
     fontFamily?: FontFamilyProperty | undefined;
+    name: string;
 }
 declare const StyledInput: import("styled-components").StyledComponent<React.FunctionComponent<InputProps>, any, {}, never>;
 export default StyledInput;

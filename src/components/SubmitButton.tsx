@@ -19,6 +19,7 @@ import {
 export interface SubmitButtonProps {
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   disabled?: boolean;
+  disabledColor?: ColorProperty;
   backgroundcolor?: BackgroundColorProperty;
   fontWeight?: FontWeightProperty;
   fontFamily?: FontFamilyProperty;
@@ -50,7 +51,9 @@ const SubmitButton: React.SFC<SubmitButtonProps> = props => {
     cursor: "pointer",
     width: "100%",
     height: "100%",
-    color: props.color || "white",
+    color: props.disabled
+      ? props.disabledColor || "lightgrey"
+      : props.color || "white",
     fontWeight: props.fontWeight || "bold",
     padding: props.padding || "0.3em",
     backgroundColor: "transparent",

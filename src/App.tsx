@@ -59,7 +59,7 @@ const App: React.SFC<AppProps> = () => {
           onChange={onSelectChange}
         />
         <TextField placeholder="your text" height="20em" onChange={change} />
-        <SubmitButton>Submit</SubmitButton>
+        <SubmitButton disabled>Submit</SubmitButton>
       </Form>
     </Wrapper>
   );

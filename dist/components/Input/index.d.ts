@@ -1,6 +1,6 @@
 import * as React from "react";
 import { FontFamilyProperty, WidthProperty, ColorProperty, FontSizeProperty, FontWeightProperty } from "csstype";
-interface errorObject {
+export interface errorObject {
     [key: string]: string;
 }
 export interface InputProps {
