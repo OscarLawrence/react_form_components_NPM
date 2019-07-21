@@ -5,63 +5,46 @@ import { Form, Input, Select, TextField, SubmitButton } from "./index";
 
 export interface AppProps {}
 
-const Wrapper = styled.div`
-  margin: 10vh;
+// style
+const FormWrapper = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  align-items: start;
+  grid-gap: 1em;
+  margin-top: 2em;
 `;
 
 const App: React.SFC<AppProps> = () => {
-  const [State, setState] = React.useState({ value1: "" });
-  const onChange = e => {
-    setState(
-      Object.defineProperty(State, "value1", {
-        enumerable: true,
-        writable: false,
-        configurable: true,
-        value: e.target.value
-      })
-    );
-  };
-  const onSelectChange = (e: React.FormEvent<HTMLDivElement>) => {
-    console.log(e);
-  };
-  const InputWrapper = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-  `;
   const validate = (value: string) => {
-    let error = [];
-    if (value.length < 5) {
-      error.push("length");
+    const error = [];
+    if (value.length < 5 && value.length != 0) {
+      error.push("Field must be at least five characters");
     }
-    if (/.*[A-Z]/.test(value)) {
-      error.push("uppercase");
-    }
-    return error.length === 0 ? true : error;
+    return error;
   };
-  const change = e => {
-    console.log(e.target.value);
+  const Submit = e => {
+    e.preventDefault();
+  };
+  const getState = value => {
+    return value;
   };
   return (
-    <Wrapper>
-      <Form>
-        <InputWrapper>
-          <Input
-            label="Test"
-            required
-            errors={{ length: "too short", uppercase: "no Uppercase!!!" }}
-            validationFunction={validate}
-          />
-        </InputWrapper>
-        <Select
-          currentValue="Test"
-          options={{ Test: "Test", Test1: "Test1" }}
-          onChange={onSelectChange}
+    <form onSubmit={Submit} noValidate method="post">
+      <FormWrapper>
+        <Input
+          label="Name"
+          validate={validate}
+          required
+          highlightColor="green"
         />
-        <TextField placeholder="your text" height="20em" onChange={change} />
-        <SubmitButton disabled>Submit</SubmitButton>
-      </Form>
-    </Wrapper>
+        <Input label="Company" validate={validate} />
+        <Input label="Email" validate={validate} />
+        <Input label="Phone" validate={validate} />
+        <button type="submit">Submit</button>
+      </FormWrapper>
+    </form>
   );
 };
 

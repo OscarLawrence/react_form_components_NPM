@@ -9,11 +9,10 @@ export interface FormProps {
 }
 
 const Form: React.SFC<FormProps> = props => {
-  const FormStyle = styled.form``;
   return (
-    <FormStyle {...props} noValidate>
+    <form method="POST" {...props} noValidate>
       {props.children}
-    </FormStyle>
+    </form>
   );
 };
 
