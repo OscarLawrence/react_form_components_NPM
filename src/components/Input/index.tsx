@@ -9,6 +9,8 @@ export interface InputProps {
   // required properties
   label: string;
   validate: (value: string) => string[];
+  state: string;
+  setState: React.SetStateAction<string>;
 
   // additional properties
   required?: boolean;
@@ -102,7 +104,7 @@ const ErrorText = styled.p`
 `;
 
 const Input: React.SFC<InputProps> = props => {
-  const [state, setState] = React.useState({ value: "", error: [] });
+  const [state, setState] = React.useState({ value: props.state, error: [] });
   const [labelSpringProps, setLabel] = useSpring(() => ({
     transform: "translateY(0em)",
     fontSize: props.labelFontSize || Fonts.labelFontSize,
@@ -134,6 +136,7 @@ const Input: React.SFC<InputProps> = props => {
     const error = props.validate(e.target.value);
     setState({ value: e.target.value, error: error });
   };
+  console.log(props.state);
   return (
     <Wrapper>
       <animated.div style={labelSpringProps}>

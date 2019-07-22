@@ -31,20 +31,34 @@ const App: React.SFC<AppProps> = () => {
     return value;
   };
   return (
-    <form onSubmit={Submit} noValidate method="post">
-      <FormWrapper>
-        <Input
-          label="Name"
-          validate={validate}
-          required
-          highlightColor="green"
-        />
-        <Input label="Company" validate={validate} />
-        <Input label="Email" validate={validate} />
-        <Input label="Phone" validate={validate} />
-        <button type="submit">Submit</button>
-      </FormWrapper>
-    </form>
+    <Form>
+      {(state, setState) => (
+        <React.Fragment>
+          <Input
+            label="Name"
+            validate={validate}
+            required
+            highlightColor="green"
+            state={state}
+            setState={setState}
+          />
+        </React.Fragment>
+      )}
+    </Form>
+    // <form onSubmit={Submit} noValidate method="post">
+    //   <FormWrapper>
+    //     <Input
+    //       label="Name"
+    //       validate={validate}
+    //       required
+    //       highlightColor="green"
+    //     />
+    //     <Input label="Company" validate={validate} />
+    //     <Input label="Email" validate={validate} />
+    //     <Input label="Phone" validate={validate} />
+    //     <button type="submit">Submit</button>
+    //   </FormWrapper>
+    // </form>
   );
 };
 
