@@ -7,13 +7,14 @@ import { useSpring, animated } from "react-spring";
 import { Colors, Fonts } from "../../styles";
 import { ColorProperty, FontFamilyProperty, FontSizeProperty } from "csstype";
 
+//________Context_________
+import { FormStateContext } from "../context/context";
+
 //__________Properties__________
 export interface InputProps {
   // required properties
   label: string;
   validate: (value: string) => string[];
-  state: string;
-  setState: (key: string, value: any) => void;
   // additional properties
   required?: boolean;
   highlightColor?: ColorProperty;
@@ -112,9 +113,8 @@ const ErrorText = styled.p`
 `;
 
 const Input: React.SFC<InputProps> = props => {
-  React.useEffect(() => {
-    props.setState(props.label, { value: "", error: [] });
-  }, []);
+  const context = React.useContext(FormStateContext);
+
   const [labelSpringProps, setLabel] = useSpring(() => ({
     transform: "translateY(0em)",
     fontSize: props.labelFontSize || Fonts.labelFontSize,
@@ -130,7 +130,7 @@ const Input: React.SFC<InputProps> = props => {
   };
   const handleBlur = e => {
     e.preventDefault();
-    if (props.state[props.label].value.length === 0) {
+    if (context[props.label].value.length === 0) {
       setLabel({
         transform: "translateY(0em)",
         fontSize: props.labelFontSize || Fonts.labelFontSize,
@@ -143,9 +143,9 @@ const Input: React.SFC<InputProps> = props => {
   const onChange = e => {
     const error = props.validate(e.target.value);
     //@ts-ignore
-    props.setState(props.label, { value: e.target.value, error: error });
+    context.update(props.label, { value: e.target.value, error: error });
   };
-  const error = props.state[props.label].error.length !== 0 || false;
+  const error = context[props.label].error.length !== 0 || false;
   return (
     <Wrapper>
       <animated.div style={labelSpringProps}>
@@ -178,8 +178,8 @@ const Input: React.SFC<InputProps> = props => {
         errorColor={props.errorColor}
         errorFontSize={props.errorFontSize}
       >
-        {props.state[props.label].error &&
-          props.state[props.label].error.map((err, i) => {
+        {context[props.label].error &&
+          context[props.label].error.map((err, i) => {
             return <ErrorText key={i}>{err}</ErrorText>;
           })}
       </Error>

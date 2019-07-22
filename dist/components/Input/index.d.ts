@@ -1,32 +1,22 @@
 import * as React from "react";
-import { FontFamilyProperty, WidthProperty, ColorProperty, FontSizeProperty, FontWeightProperty } from "csstype";
-export interface errorObject {
-    [key: string]: string;
-}
+import { ColorProperty, FontFamilyProperty, FontSizeProperty } from "csstype";
 export interface InputProps {
-    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    validationFunction?: (value: string) => string[] | true;
     label: string;
-    labelSubtleColor?: ColorProperty;
-    labelHighlightColor?: ColorProperty;
-    labelFontFamily?: FontFamilyProperty;
-    labelFontWeight?: FontWeightProperty;
-    borderSubtleColor?: ColorProperty;
-    borderHighlightColor?: ColorProperty;
-    textColor?: ColorProperty;
-    asteriskColor?: ColorProperty;
-    errorColor?: ColorProperty;
-    width?: WidthProperty<string | number>;
-    fontFamily?: FontFamilyProperty;
-    fontSize?: FontSizeProperty<string | number>;
-    fontWeight?: FontWeightProperty;
-    style?: React.CSSProperties;
-    name?: string;
-    id?: string;
-    className?: string;
-    errors?: errorObject;
+    validate: (value: string) => string[];
+    state: string;
+    setState: (key: string, value: any) => void;
     required?: boolean;
-    type?: string;
+    highlightColor?: ColorProperty;
+    subtleColor?: ColorProperty;
+    labelColor?: ColorProperty;
+    labelFontFamily?: FontFamilyProperty;
+    labelFontSize?: FontSizeProperty<string | number>;
+    inputFontSize?: FontSizeProperty<string | number>;
+    inputFontFamily?: FontFamilyProperty;
+    inputColor?: ColorProperty;
+    errorColor?: ColorProperty;
+    errorFontFamily?: FontFamilyProperty;
+    errorFontSize?: FontSizeProperty<string | number>;
 }
 declare const Input: React.SFC<InputProps>;
 export default Input;

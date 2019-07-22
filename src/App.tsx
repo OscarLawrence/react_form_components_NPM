@@ -29,7 +29,8 @@ const App: React.SFC<AppProps> = () => {
   };
   return (
     <Form>
-      {(state, setState) => {
+      {context => {
+        console.log(context);
         return (
           <React.Fragment>
             <Input
@@ -37,8 +38,6 @@ const App: React.SFC<AppProps> = () => {
               validate={validate}
               required
               highlightColor="green"
-              state={state}
-              setState={setState}
             />
           </React.Fragment>
         );
