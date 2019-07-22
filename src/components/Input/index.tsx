@@ -1,17 +1,19 @@
+//__________General Imports___________
 import * as React from "react";
 import styled from "styled-components";
 import { useSpring, animated } from "react-spring";
 
+//_________Custom Imports_______________
 import { Colors, Fonts } from "../../styles";
 import { ColorProperty, FontFamilyProperty, FontSizeProperty } from "csstype";
 
+//__________Properties__________
 export interface InputProps {
   // required properties
   label: string;
   validate: (value: string) => string[];
   state: string;
-  setState: React.SetStateAction<string>;
-
+  setState: (key: string, value: any) => void;
   // additional properties
   required?: boolean;
   highlightColor?: ColorProperty;
@@ -33,9 +35,13 @@ export interface InputProps {
   errorFontSize?: FontSizeProperty<string | number>;
 }
 
-// style
+//__________Styles____________
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  margin-top: 0.75em;
+`;
+
+// Label
 
 interface labelProps {
   error: boolean;
@@ -53,6 +59,7 @@ const Label = styled.p`
   font-family: ${(p: labelProps) => p.labelFontFamily || Fonts.label};
 `;
 
+// Input
 interface InputTagProps {
   error: boolean;
   errorColor: ColorProperty;
@@ -83,6 +90,7 @@ const InputTag = styled.input`
     }
   `;
 
+// __Errors
 interface ErrorProps {
   errorColor: ColorProperty;
   errorFontFamily: FontFamilyProperty;
@@ -104,7 +112,9 @@ const ErrorText = styled.p`
 `;
 
 const Input: React.SFC<InputProps> = props => {
-  const [state, setState] = React.useState({ value: props.state, error: [] });
+  React.useEffect(() => {
+    props.setState(props.label, { value: "", error: [] });
+  }, []);
   const [labelSpringProps, setLabel] = useSpring(() => ({
     transform: "translateY(0em)",
     fontSize: props.labelFontSize || Fonts.labelFontSize,
@@ -112,7 +122,6 @@ const Input: React.SFC<InputProps> = props => {
   }));
   const handleFocus = e => {
     e.preventDefault();
-    console.log("focussed");
     setLabel({
       transform: "translateY(-1em)",
       fontSize: "0.75em",
@@ -121,8 +130,7 @@ const Input: React.SFC<InputProps> = props => {
   };
   const handleBlur = e => {
     e.preventDefault();
-    console.log("unFocussed");
-    if (state.value.length === 0) {
+    if (props.state[props.label].value.length === 0) {
       setLabel({
         transform: "translateY(0em)",
         fontSize: props.labelFontSize || Fonts.labelFontSize,
@@ -134,14 +142,15 @@ const Input: React.SFC<InputProps> = props => {
   };
   const onChange = e => {
     const error = props.validate(e.target.value);
-    setState({ value: e.target.value, error: error });
+    //@ts-ignore
+    props.setState(props.label, { value: e.target.value, error: error });
   };
-  console.log(props.state);
+  const error = props.state[props.label].error.length !== 0 || false;
   return (
     <Wrapper>
       <animated.div style={labelSpringProps}>
         <Label
-          error={state.error.length !== 0}
+          error={error}
           errorColor={props.errorColor}
           labelColor={props.labelColor}
           labelFontFamily={props.labelFontFamily}
@@ -152,7 +161,7 @@ const Input: React.SFC<InputProps> = props => {
         </Label>
       </animated.div>
       <InputTag
-        error={state.error.length !== 0}
+        error={error}
         errorColor={props.errorColor}
         highlightColor={props.highlightColor}
         subtleColor={props.subtleColor}
@@ -169,9 +178,10 @@ const Input: React.SFC<InputProps> = props => {
         errorColor={props.errorColor}
         errorFontSize={props.errorFontSize}
       >
-        {state.error.map((err, i) => {
-          return <ErrorText key={i}>{err}</ErrorText>;
-        })}
+        {props.state[props.label].error &&
+          props.state[props.label].error.map((err, i) => {
+            return <ErrorText key={i}>{err}</ErrorText>;
+          })}
       </Error>
     </Wrapper>
   );

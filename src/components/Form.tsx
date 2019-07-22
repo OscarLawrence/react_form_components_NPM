@@ -9,23 +9,37 @@ export interface FormProps {
   render?: (state, setState) => React.ReactNode;
 }
 
-const Form: React.SFC<FormProps> = props => {
-  const [state, setState] = React.useState("hello");
+export interface FormProps {
+  style?: React.CSSProperties;
+  name?: string;
+  id?: string;
+  className?: string;
+  render?: (state, setState) => React.ReactNode;
+}
 
-  const getContent = () => {
-    if (props.render) {
-      return props.render(state, setState);
-    }
-    if (typeof props.children === "function") {
-      return props.children(state, setState);
-    }
-    return props.children;
+export interface FormState {}
+
+class Form extends React.Component<FormProps, FormState> {
+  state = { Name: { value: "", error: [] } };
+  updateState = (key: string, value: any) => {
+    this.setState({ [key]: value });
   };
-  return (
-    <form method="POST" {...props} noValidate>
-      {getContent()}
-    </form>
-  );
-};
+  getContent = () => {
+    if (this.props.render) {
+      return this.props.render(this.state, this.setState);
+    }
+    if (typeof this.props.children === "function") {
+      return this.props.children(this.state, this.updateState);
+    }
+    return this.props.children;
+  };
+  render() {
+    return (
+      <form method="POST" {...this.props} noValidate>
+        {this.getContent()}
+      </form>
+    );
+  }
+}
 
 export default Form;
