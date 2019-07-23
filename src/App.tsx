@@ -24,24 +24,24 @@ const App: React.SFC<AppProps> = () => {
     }
     return error;
   };
-  const Submit = e => {
+  const onSubmit = (e, State) => {
     e.preventDefault();
+    console.log(e);
   };
   return (
     <Form>
-      {context => {
-        console.log(context);
-        return (
-          <React.Fragment>
-            <Input
-              label="Name"
-              validate={validate}
-              required
-              highlightColor="green"
-            />
-          </React.Fragment>
-        );
-      }}
+      {State => (
+        <React.Fragment>
+          <Input
+            label="Name"
+            name="Name"
+            validate={validate}
+            required
+            highlightColor="green"
+          />
+          <button onClick={onSubmit.bind(State)}>Submit</button>
+        </React.Fragment>
+      )}
     </Form>
   );
 };

@@ -14,6 +14,7 @@ import { FormStateContext } from "../context/context";
 export interface InputProps {
   // required properties
   label: string;
+  name: string;
   validate: (value: string) => string[];
   // additional properties
   required?: boolean;
@@ -45,18 +46,17 @@ const Wrapper = styled.div`
 // Label
 
 interface labelProps {
-  error: boolean;
-  errorColor: ColorProperty;
-  labelColor: ColorProperty;
+  color: ColorProperty;
   labelFontFamily: FontFamilyProperty;
   labelFontSize: FontSizeProperty<string | number>;
 }
 
 const Label = styled.p`
+  z-index: -1;
+  pointer-events: none;
   margin: 0;
   position: absolute;
-  color: ${(p: labelProps) =>
-    p.error ? p.errorColor || Colors.error : p.labelColor || Colors.label};
+  color: ${(p: labelProps) => p.color};
   font-family: ${(p: labelProps) => p.labelFontFamily || Fonts.label};
 `;
 
@@ -88,6 +88,7 @@ const InputTag = styled.input`
     &:focus {
         border-color: ${(p: InputTagProps) =>
           p.highlightColor || Colors.highlight}
+        
     }
   `;
 
@@ -113,8 +114,10 @@ const ErrorText = styled.p`
 `;
 
 const Input: React.SFC<InputProps> = props => {
-  const context = React.useContext(FormStateContext);
-
+  const State = React.useContext(FormStateContext);
+  const [Focus, setFocus] = React.useState(false);
+  const [Empty, setEmpty] = React.useState(true);
+  console.log(State);
   const [labelSpringProps, setLabel] = useSpring(() => ({
     transform: "translateY(0em)",
     fontSize: props.labelFontSize || Fonts.labelFontSize,
@@ -122,6 +125,7 @@ const Input: React.SFC<InputProps> = props => {
   }));
   const handleFocus = e => {
     e.preventDefault();
+    setFocus(true);
     setLabel({
       transform: "translateY(-1em)",
       fontSize: "0.75em",
@@ -130,7 +134,8 @@ const Input: React.SFC<InputProps> = props => {
   };
   const handleBlur = e => {
     e.preventDefault();
-    if (context[props.label].value.length === 0) {
+    setFocus(false);
+    if (e.target.value.length === 0) {
       setLabel({
         transform: "translateY(0em)",
         fontSize: props.labelFontSize || Fonts.labelFontSize,
@@ -142,17 +147,39 @@ const Input: React.SFC<InputProps> = props => {
   };
   const onChange = e => {
     const error = props.validate(e.target.value);
-    //@ts-ignore
-    context.update(props.label, { value: e.target.value, error: error });
+    State.update(props.name, { value: e.target.value, error: error });
+    if (e.target.value.length > 0) {
+      setEmpty(false);
+    } else {
+      setEmpty(true);
+    }
   };
-  const error = context[props.label].error.length !== 0 || false;
+
+  const __hasError = () => {
+    return __getError().length > 0;
+  };
+
+  const __getError = () => {
+    return State.FormState[props.name] ? State.FormState[props.name].error : [];
+  };
+
+  const getLabelColor = () => {
+    if (Focus) {
+      return props.highlightColor || Colors.highlight;
+    }
+    if (__hasError()) {
+      return props.errorColor || Colors.error;
+    }
+    if (Empty) {
+      return props.labelColor || Colors.label;
+    }
+    return props.subtleColor || Colors.subtle;
+  };
   return (
     <Wrapper>
       <animated.div style={labelSpringProps}>
         <Label
-          error={error}
-          errorColor={props.errorColor}
-          labelColor={props.labelColor}
+          color={getLabelColor()}
           labelFontFamily={props.labelFontFamily}
           labelFontSize={props.labelFontSize}
         >
@@ -161,7 +188,7 @@ const Input: React.SFC<InputProps> = props => {
         </Label>
       </animated.div>
       <InputTag
-        error={error}
+        error={__hasError()}
         errorColor={props.errorColor}
         highlightColor={props.highlightColor}
         subtleColor={props.subtleColor}
@@ -178,10 +205,9 @@ const Input: React.SFC<InputProps> = props => {
         errorColor={props.errorColor}
         errorFontSize={props.errorFontSize}
       >
-        {context[props.label].error &&
-          context[props.label].error.map((err, i) => {
-            return <ErrorText key={i}>{err}</ErrorText>;
-          })}
+        {__getError().map((err, i) => {
+          return <ErrorText key={i}>{err}</ErrorText>;
+        })}
       </Error>
     </Wrapper>
   );

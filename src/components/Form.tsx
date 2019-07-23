@@ -2,7 +2,6 @@ import * as React from "react";
 import styled from "styled-components";
 
 import { FormStateContext } from "./context/context";
-import FormStateProvider from "./context/Providers/FormStateProvider";
 
 export interface FormProps {
   style?: React.CSSProperties;
@@ -10,14 +9,22 @@ export interface FormProps {
   id?: string;
   className?: string;
   render?: (context: any) => React.ReactNode;
+  onChange?: (state) => void;
+  onSubmit?: (state) => void;
 }
 
-export interface FormState {}
+export interface FormState {
+  FormState: object;
+}
 
 class Form extends React.Component<FormProps, FormState> {
-  state = { Name: { value: "", error: [] } };
+  state = { FormState: {} };
   update = (key, value) => {
-    this.setState({ [key]: value });
+    this.setState({ FormState: { ...this.state.FormState, [key]: value } });
+    this.props.onChange &&
+      this.props.onChange({
+        FormState: { ...this.state.FormState, [key]: value }
+      });
   };
   getContent = () => {
     if (this.props.render) {
@@ -28,9 +35,13 @@ class Form extends React.Component<FormProps, FormState> {
     }
     return this.props.children;
   };
+  onChange = e => {
+    console.log(e);
+    console.log(e.target);
+  };
   render() {
     return (
-      <form method="POST" {...this.props} noValidate>
+      <form onChange={this.onChange} method="POST" {...this.props} noValidate>
         <FormStateContext.Provider
           value={{ ...this.state, update: this.update }}
         >
