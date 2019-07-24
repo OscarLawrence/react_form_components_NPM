@@ -2,7 +2,6 @@ import * as React from "react";
 import styled from "styled-components";
 
 import { Form, Input, Select, TextField, SubmitButton } from "./index";
-
 export interface AppProps {}
 
 // style
@@ -26,10 +25,13 @@ const App: React.SFC<AppProps> = () => {
   };
   const onSubmit = (e, State) => {
     e.preventDefault();
-    console.log(e);
+    console.log(e, State);
+  };
+  const onChange = State => {
+    console.log(State);
   };
   return (
-    <Form>
+    <Form onChange={onChange}>
       {State => (
         <React.Fragment>
           <Input

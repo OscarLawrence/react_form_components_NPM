@@ -35,19 +35,21 @@ class Form extends React.Component<FormProps, FormState> {
     }
     return this.props.children;
   };
-  onChange = e => {
-    console.log(e);
-    console.log(e.target);
+  onSubmit = e => {
+    e.preventDefault();
+    this.props.onSubmit && this.props.onSubmit(this.state.FormState);
   };
   render() {
     return (
-      <form onChange={this.onChange} method="POST" {...this.props} noValidate>
-        <FormStateContext.Provider
-          value={{ ...this.state, update: this.update }}
-        >
-          {this.getContent()}
-        </FormStateContext.Provider>
-      </form>
+      <React.Fragment>
+        <form onSubmit={this.onSubmit} method="POST" {...this.props} noValidate>
+          <FormStateContext.Provider
+            value={{ ...this.state, update: this.update }}
+          >
+            {this.getContent()}
+          </FormStateContext.Provider>
+        </form>
+      </React.Fragment>
     );
   }
 }

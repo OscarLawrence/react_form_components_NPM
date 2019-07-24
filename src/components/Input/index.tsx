@@ -7,6 +7,9 @@ import { useSpring, animated } from "react-spring";
 import { Colors, Fonts } from "../../styles";
 import { ColorProperty, FontFamilyProperty, FontSizeProperty } from "csstype";
 
+// helpers
+import { getError, hasError, getLabelColor } from "./helpers";
+
 //________Context_________
 import { FormStateContext } from "../context/context";
 
@@ -117,7 +120,7 @@ const Input: React.SFC<InputProps> = props => {
   const State = React.useContext(FormStateContext);
   const [Focus, setFocus] = React.useState(false);
   const [Empty, setEmpty] = React.useState(true);
-  console.log(State);
+
   const [labelSpringProps, setLabel] = useSpring(() => ({
     transform: "translateY(0em)",
     fontSize: props.labelFontSize || Fonts.labelFontSize,
@@ -154,32 +157,11 @@ const Input: React.SFC<InputProps> = props => {
       setEmpty(true);
     }
   };
-
-  const __hasError = () => {
-    return __getError().length > 0;
-  };
-
-  const __getError = () => {
-    return State.FormState[props.name] ? State.FormState[props.name].error : [];
-  };
-
-  const getLabelColor = () => {
-    if (Focus) {
-      return props.highlightColor || Colors.highlight;
-    }
-    if (__hasError()) {
-      return props.errorColor || Colors.error;
-    }
-    if (Empty) {
-      return props.labelColor || Colors.label;
-    }
-    return props.subtleColor || Colors.subtle;
-  };
   return (
     <Wrapper>
       <animated.div style={labelSpringProps}>
         <Label
-          color={getLabelColor()}
+          color={getLabelColor(State, Focus, Empty, props)}
           labelFontFamily={props.labelFontFamily}
           labelFontSize={props.labelFontSize}
         >
@@ -188,7 +170,7 @@ const Input: React.SFC<InputProps> = props => {
         </Label>
       </animated.div>
       <InputTag
-        error={__hasError()}
+        error={hasError(State, props)}
         errorColor={props.errorColor}
         highlightColor={props.highlightColor}
         subtleColor={props.subtleColor}
@@ -205,7 +187,7 @@ const Input: React.SFC<InputProps> = props => {
         errorColor={props.errorColor}
         errorFontSize={props.errorFontSize}
       >
-        {__getError().map((err, i) => {
+        {getError(State, props).map((err, i) => {
           return <ErrorText key={i}>{err}</ErrorText>;
         })}
       </Error>
