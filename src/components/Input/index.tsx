@@ -86,11 +86,13 @@ const InputTag = styled.input`
       props.inputFontSize || Fonts.inputFontSize};
     font-family: ${(props: InputTagProps) =>
       props.inputFontFamily || Fonts.input}
-    color: ${(p: InputTagProps) => p.inputColor || Colors.input}
+    color: ${(p: InputTagProps) =>
+      p.error ? p.errorColor : p.inputColor || Colors.input}
     outline: 0;
     &:focus {
         border-color: ${(p: InputTagProps) =>
-          p.highlightColor || Colors.highlight}
+          p.highlightColor || Colors.highlight};
+          outline: 0;
         
     }
   `;

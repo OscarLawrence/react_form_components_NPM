@@ -4,26 +4,20 @@ export interface FormProps {
     name?: string;
     id?: string;
     className?: string;
-    render?: (state: any, setState: any) => React.ReactNode;
-}
-export interface FormProps {
-    style?: React.CSSProperties;
-    name?: string;
-    id?: string;
-    className?: string;
-    render?: (state: any, setState: any) => React.ReactNode;
+    render?: (context: any) => React.ReactNode;
+    onChange?: (state: any) => void;
+    onSubmit?: (state: any) => void;
 }
 export interface FormState {
+    FormState: object;
 }
 declare class Form extends React.Component<FormProps, FormState> {
     state: {
-        Name: {
-            value: string;
-            error: any[];
-        };
+        FormState: {};
     };
-    updateState: (key: string, value: any) => void;
+    update: (key: any, value: any) => void;
     getContent: () => any;
+    onSubmit: (e: any) => void;
     render(): JSX.Element;
 }
 export default Form;
